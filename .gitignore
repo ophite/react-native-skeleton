@@ -1,9 +1,7 @@
 # OSX
 #
 .DS_Store
-/.idea
-.idea
-/android/.gradle
+
 
 # Xcode
 #
@@ -29,3 +27,7 @@ project.xcworkspace
 #
 node_modules/
 npm-debug.log
+
+.idea/
+/.idea/workspace.xml
+/android/.gradle
