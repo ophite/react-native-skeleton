@@ -29,5 +29,4 @@ node_modules/
 npm-debug.log
 
 .idea/
-/.idea/workspace.xml
-/android/.gradle
+android/.gradle
