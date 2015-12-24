@@ -1,6 +1,9 @@
 # OSX
 #
 .DS_Store
+/.idea
+.idea
+/android/.gradle
 
 # Xcode
 #
