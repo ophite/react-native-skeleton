@@ -2,7 +2,6 @@
 #
 .DS_Store
 
-
 # Xcode
 #
 build/
@@ -27,6 +26,3 @@ project.xcworkspace
 #
 node_modules/
 npm-debug.log
-
-.idea/
-android/.gradle

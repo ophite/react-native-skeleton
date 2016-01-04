@@ -2,7 +2,8 @@
 /*eslint-disable prefer-const */
 
 import React from "react-native";
-import App from "../containers/app";
+import App from "../components/app";
+import Login from "../components/login";
 import NavigationBar from "./navigation-bar";
 
 let {
@@ -40,8 +41,8 @@ class Scene extends React.Component {
 				style={{flex: 1}}
 				renderScene={this.renderScene}
 				initialRoute={{
-                    component: App,
-                    title: "Starter App 2"
+                    component: Login,
+                    title: "Starter App 211"
                 }}
 			/>
 		);
