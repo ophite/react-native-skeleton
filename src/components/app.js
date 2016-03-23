@@ -2,7 +2,7 @@
 /*eslint-disable prefer-const */
 
 import React from "react-native";
-import { connect } from "../../node_modules/react-redux/native";
+import { connect } from "../../node_modules/react-redux";
 import { fetchData } from "../actions";
 
 let {

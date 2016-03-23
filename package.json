@@ -5,21 +5,20 @@
   "scripts": {
     "flow": "flow check",
     "lint": "eslint --ext .js,.jsx src",
-    "start": "node_modules/react-native/packager/packager.sh"
+    "start": "node_modules/react-native/packager/packager.sh",
+    "start2": "node node_modules/react-native/local-cli/cli.js start",
+    "clean": "npm run fixBabel",
+    "fixBabel": "find node_modules -type f -name .babelrc | grep -v /react-native/ | xargs rm",
+    "start": "react-native start",
+    "setup_project": "npm run step1; npm run step2",
+    "step1": "rm -rf node_modules/react-native/node_modules/react; rm -rf node_modules/react-native/node_modules/fbjs; rm -rf node_modules/react/node_modules/fbjs",
+    "step2": "cd node_modules; find . -name .babelrc | grep -v packager | xargs rm"
   },
   "dependencies": {
-    "lodash": "^3.10.1",
-    "react-native": "^0.14",
-    "react-redux": "^3.1.0",
-    "redux": "^3.0.2",
-    "redux-logger": "^2.0.1",
-    "redux-thunk": "^1.0.0"
-  },
-  "devDependencies": {
-    "concurrently": "^0.1.1",
-    "eslint": "^1.6.0",
-    "eslint-config-defaults": "^7.0.1",
-    "eslint-plugin-filenames": "^0.1.2",
-    "eslint-plugin-react": "^3.5.1"
+    "react-native": "0.21.0",
+    "react-redux": "4.4.0",
+    "redux": "3.3.1",
+    "redux-thunk": "1.0.3",
+    "redux-logger": "^2.0.1"
   }
 }

@@ -2,7 +2,7 @@
 /*eslint-disable prefer-const */
 
 import React from "react-native";
-import { connect } from "../../node_modules/react-redux/native";
+import { connect } from "../../node_modules/react-redux";
 import { fetchData } from "../actions";
 
 import App from "./app";
@@ -63,6 +63,8 @@ let styles = StyleSheet.create({
     }
 });
 
+console.log('before debug????? >>>> ');
+debugger;
 
 class Login extends React.Component {
 
@@ -95,7 +97,6 @@ class Login extends React.Component {
                 </Text>
                 <TextInput style={styles.input}
                            onChangeText={(text) => {
-                            console.log(text);
                             this.setState({username: text});
                            }}
                            placeholder="User name">
