@@ -42,7 +42,7 @@ class Scene extends React.Component {
 				renderScene={this.renderScene}
 				initialRoute={{
                     component: Login,
-                    title: "Starter App 211"
+                    title: "Starter App"
                 }}
 			/>
 		);
