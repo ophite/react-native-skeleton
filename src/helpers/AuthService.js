@@ -16,7 +16,12 @@ class AuthService {
 				return callback();
 			}
 
-			let zippedObj = _.zipObject(val);
+			let zippedObj = {};
+			val.forEach((item) => {
+				zippedObj[item[0]] = item[1];
+			});
+
+			// let zippedObj = _.zipObject(val);
 			if (!zippedObj[authKey]) {
 				return callback();
 			}
