@@ -72,21 +72,32 @@ class Login extends React.Component {
 		super(props);
 		this.state = {
 			showProgress: false,
-			isLoggedIn: false
+			isLoggedIn: false,
+			checkingAuth: true
 		};
 	}
 
 	componentDidMount() {
 		this.props.dispatch(fetchData());
+		authService.getAuthInfo((err, authInfo) => {
+			this.setState({
+				checkingAuth: false,
+				isLoggedIn: authInfo != null
+			});
+		});
 	}
 
 	render() {
 
-		if (this.state.isLoggedIn) {
-			return (
-				<App/>
-			);
+		if (this.state.checkingAuth) {
+			return (<ProgressBar style={styles.progress}/>);
 		}
+
+		// if (this.state.isLoggedIn) {
+		// 	return (
+		// 		<App/>
+		// 	);
+		// }
 
 		var errorView = <View/>;
 		if (!this.state.success && this.state.badCredentials) {
@@ -99,6 +110,20 @@ class Login extends React.Component {
 			errorView = <Text style={styles.error}>
 				We experienced an unexpected issue
 			</Text>;
+		}
+
+		if (this.state.isLoggedIn) {
+			// this.props.navigator.push({
+			// 	title: 'Image component list',
+			// 	passProps: {
+			// 		p1: 'custom prop'
+			// 	},
+			// 	component: App
+			// });
+
+			return (
+				<App/>
+			);
 		}
 
 		return (
@@ -137,8 +162,12 @@ class Login extends React.Component {
 			username: this.state.username,
 			password: this.state.password
 		}, (results) => {
-			this.setState(Object.assign({showProgress: false}, results));
 			if (results.success) {
+				this.setState(Object.assign({
+					showProgress: false,
+					isLoggedIn: true
+				}));
+
 				this.props.navigator.push({
 					title: 'Image component list',
 					passProps: {
@@ -146,6 +175,11 @@ class Login extends React.Component {
 					},
 					component: App
 				});
+			} else {
+				this.setState(Object.assign({
+					showProgress: false,
+					isLoggedIn: false
+				}, results));
 			}
 		});
 
