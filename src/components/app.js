@@ -60,30 +60,10 @@ class App extends React.Component {
 }
 
 let styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		backgroundColor: '#fff',
-	},
-	scene: {
-		backgroundColor: '#1e2127',
-		flex: 1,
-		justifyContent: 'center',
-		alignItems: 'center',
-	},
-
-	backdrop: {
-		flex: 1,
-		flexDirection: 'column',
-	},
-
 	image: {
 		width: 70,
 		height: 70
-	},
-	button: {
-		color: '#007aff',
-		fontWeight: '600',
-	},
+	}
 });
 
 
