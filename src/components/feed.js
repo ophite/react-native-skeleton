@@ -6,6 +6,7 @@ let React = require('react-native');
 import authService from '../helpers/AuthService';
 import ProgressBar from 'ProgressBarAndroid';
 import moment from 'moment';
+import PushPayload from './pushPayload';
 
 let {
 	StyleSheet,
@@ -13,7 +14,8 @@ let {
 	Component,
 	View,
 	ListView,
-	Image
+	Image,
+	TouchableHighlight
 } = React;
 
 let styles = StyleSheet.create({
@@ -81,30 +83,44 @@ class Feed extends Component {
 		});
 	}
 
+	pressRow(rowData) {
+		this.props.navigator.push({
+			title: 'Push Event',
+			component: PushPayload,
+			passProps: {
+				pushEvent: rowData
+			}
+		});
+	}
+
 	renderRow(rowData) {
 		return (
-			<View style={styles.row}>
-				<Image style={styles.image}
-					   source={{uri: rowData.actor.avatar_url}}/>
-				<View style={{
+			<TouchableHighlight
+				onPress={()=> this.pressRow(rowData)}
+				underlayColor='#ddd'>
+				<View style={styles.row}>
+					<Image style={styles.image}
+						   source={{uri: rowData.actor.avatar_url}}/>
+					<View style={{
 					paddingLeft: 20
 				}}>
-					<Text style={{backgroundColor: '#fff'}}>
-						{moment(rowData.created_at).fromNow()}
-					</Text>
-					<Text style={{backgroundColor: '#fff'}}>
-						{rowData.actor.login}
-					</Text>
-					<Text style={{backgroundColor: '#fff'}}>
-						{rowData.payload.ref.replace('refs/heads/', '')}
-					</Text>
-					<Text style={{backgroundColor: '#fff'}}>
-						at <Text style={{
+						<Text style={{backgroundColor: '#fff'}}>
+							{moment(rowData.created_at).fromNow()}
+						</Text>
+						<Text style={{backgroundColor: '#fff'}}>
+							{rowData.actor.login}
+						</Text>
+						<Text style={{backgroundColor: '#fff'}}>
+							{rowData.payload.ref.replace('refs/heads/', '')}
+						</Text>
+						<Text style={{backgroundColor: '#fff'}}>
+							at <Text style={{
 							fontWeight: 'bold'
 						}}>{rowData.repo.name}</Text>
-					</Text>
+						</Text>
+					</View>
 				</View>
-			</View>
+			</TouchableHighlight>
 		);
 	}
 

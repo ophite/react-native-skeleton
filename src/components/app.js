@@ -4,13 +4,15 @@ import {connect} from "../../node_modules/react-redux";
 import TabNavigator from 'react-native-tab-navigator';
 import React from 'react-native';
 import Feed from './feed';
+import NavigationBar from "./navigation-bar";
 
 let {
 	Image,
 	StyleSheet,
 	Text,
 	View,
-	Component
+	Component,
+	Navigator
 } = React;
 
 
@@ -21,6 +23,27 @@ class App extends Component {
 			selectedTab: 'home',
 			showTabBar: true
 		};
+	}
+
+	renderScene(route, navigator) {
+		const Component = route.component;
+
+		return (
+			<View style={{flex:1}}>
+				<NavigationBar
+					backgroundStyle={{backgroundColor: "#eee"}}
+					navigator={navigator}
+					route={route}
+					title={route.title}
+					titleColor="#333"
+				/>
+				<Component
+					navigator={navigator}
+					route={route}
+					{...route.passProps}
+				/>
+			</View>
+		);
 	}
 
 	render() {
@@ -46,7 +69,14 @@ class App extends Component {
 					renderIcon={() => <Image style={styles.image} source={require('image!ic_feed')}/> }
 					renderSelectedIcon={() => <Image style={styles.image} source={require('image!ic_feed')}/>}
 					onPress={() => this.setState({ selectedTab: 'home' })}>
-					<Feed></Feed>
+					<Navigator
+						style={styles.navigationBar}
+						renderScene={this.renderScene}
+						initialRoute={{
+							component: Feed,
+							title: 'Feed'
+						}}
+					/>
 				</TabNavigator.Item>
 
 				<TabNavigator.Item
@@ -67,6 +97,9 @@ let styles = StyleSheet.create({
 	image: {
 		width: 70,
 		height: 70
+	},
+	navigationBar: {
+		flex: 1
 	}
 });
 

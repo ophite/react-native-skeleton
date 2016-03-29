@@ -17,7 +17,6 @@ class Scene extends React.Component {
 
 		return (
 			<View style={{flex: 1}}>
-
 				<NavigationBar
 					backgroundStyle={{backgroundColor: "#eee"}}
 					navigator={navigator}
@@ -25,7 +24,6 @@ class Scene extends React.Component {
 					title={route.title}
 					titleColor="#333"
 				/>
-
 				<Component
 					navigator={navigator}
 					route={route}
