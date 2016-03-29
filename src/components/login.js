@@ -7,7 +7,6 @@ import {fetchData} from "../actions";
 import ProgressBar from 'ProgressBarAndroid';
 import App from "./app";
 import authService from '../helpers/AuthService';
-
 //import App from 'app';
 
 let {
@@ -31,6 +30,10 @@ let styles = StyleSheet.create({
 	logo: {
 		width: 166,
 		height: 155
+	},
+	launcher: {
+		width: 144,
+		height: 144
 	},
 	header: {
 		fontSize: 30,
@@ -93,11 +96,11 @@ class Login extends React.Component {
 			return (<ProgressBar style={styles.progress}/>);
 		}
 
-		// if (this.state.isLoggedIn) {
-		// 	return (
-		// 		<App/>
-		// 	);
-		// }
+		if (this.state.isLoggedIn) {
+			return (
+				<App/>
+			);
+		}
 
 		var errorView = <View/>;
 		if (!this.state.success && this.state.badCredentials) {
@@ -112,23 +115,23 @@ class Login extends React.Component {
 			</Text>;
 		}
 
-		if (this.state.isLoggedIn) {
-			// this.props.navigator.push({
-			// 	title: 'Image component list',
-			// 	passProps: {
-			// 		p1: 'custom prop'
-			// 	},
-			// 	component: App
-			// });
-
-			return (
-				<App/>
-			);
-		}
+		// if (this.state.isLoggedIn) {
+		// 	// this.props.navigator.push({
+		// 	// 	title: 'Image component list',
+		// 	// 	passProps: {
+		// 	// 		p1: 'custom prop'
+		// 	// 	},
+		// 	// 	component: App
+		// 	// });
+		//
+		// 	return (
+		// 		<App/>
+		// 	);
+		// }
 
 		return (
 			<View style={styles.container}>
-				<Image style={styles.logo} source={require('../static/image/holiday-octocat.png')}/>
+				<Image style={styles.launcher} source={require('image!ic_launcher')} />
 				<Text style={styles.header}> Login component </Text>
 				<TextInput style={styles.input} placeholder="User name"
 						   onChangeText={this.onUserNameChanged.bind(this)}>
