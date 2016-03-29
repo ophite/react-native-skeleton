@@ -1,16 +1,20 @@
 'use strict';
 
 import {connect} from "../../node_modules/react-redux";
-let React = require('react-native');
+import TabNavigator from 'react-native-tab-navigator';
+import React from 'react-native';
+import Feed from './feed';
+
 let {
 	Image,
 	StyleSheet,
 	Text,
 	View,
+	Component
 } = React;
-import TabNavigator from 'react-native-tab-navigator';
 
-class App extends React.Component {
+
+class App extends Component {
 	constructor(props, context) {
 		super(props, context);
 		this.state = {
@@ -42,7 +46,7 @@ class App extends React.Component {
 					renderIcon={() => <Image style={styles.image} source={require('image!ic_feed')}/> }
 					renderSelectedIcon={() => <Image style={styles.image} source={require('image!ic_feed')}/>}
 					onPress={() => this.setState({ selectedTab: 'home' })}>
-					<Text>test 1</Text>
+					<Feed></Feed>
 				</TabNavigator.Item>
 
 				<TabNavigator.Item
