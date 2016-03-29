@@ -27,7 +27,7 @@ class App extends React.Component {
 			tabBarStyle.overflow = 'hidden';
 			sceneStyle.paddingBottom = 0;
 		}
-		
+
 		var homeView = 'homeView';
 		var profileView = 'profileView';
 		let tabBarHeight = 0;
@@ -39,8 +39,8 @@ class App extends React.Component {
 				<TabNavigator.Item
 					selected={this.state.selectedTab === 'home'}
 					title="Home"
-					renderIcon={() => <Image style={styles.logo} source={require('image!ic_launcher')}/> }
-					renderSelectedIcon={() => <Image style={styles.logo} source={require('image!ic_launcher')}/>}
+					renderIcon={() => <Image style={styles.image} source={require('image!ic_feed')}/> }
+					renderSelectedIcon={() => <Image style={styles.image} source={require('image!ic_feed')}/>}
 					onPress={() => this.setState({ selectedTab: 'home' })}>
 					<Text>test 1</Text>
 				</TabNavigator.Item>
@@ -48,17 +48,15 @@ class App extends React.Component {
 				<TabNavigator.Item
 					selected={this.state.selectedTab === 'home2'}
 					title="Home 2"
-					renderIcon={() => <Image style={styles.logo} source={require('image!ic_feed')}/> }
-					renderSelectedIcon={() => <Image style={styles.logo} source={require('image!ic_feed')}/>}
+					renderIcon={() => <Image style={styles.image} source={require('image!ic_search')}/> }
+					renderSelectedIcon={() => <Image style={styles.image} source={require('image!ic_search')}/>}
 					onPress={() => this.setState({ selectedTab: 'home2' })}>
 					<Text>test 2</Text>
 				</TabNavigator.Item>
 
 			</TabNavigator>
 		);
-
 	}
-
 }
 
 let styles = StyleSheet.create({
@@ -78,9 +76,9 @@ let styles = StyleSheet.create({
 		flexDirection: 'column',
 	},
 
-	logo: {
-		width: 166,
-		height: 155
+	image: {
+		width: 70,
+		height: 70
 	},
 	button: {
 		color: '#007aff',

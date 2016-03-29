@@ -31,10 +31,6 @@ let styles = StyleSheet.create({
 		width: 166,
 		height: 155
 	},
-	launcher: {
-		width: 144,
-		height: 144
-	},
 	header: {
 		fontSize: 30,
 		marginTop: 10
@@ -131,7 +127,7 @@ class Login extends React.Component {
 
 		return (
 			<View style={styles.container}>
-				<Image style={styles.launcher} source={require('image!ic_launcher')} />
+				<Image style={styles.logo} source={require('image!ic_launcher')} />
 				<Text style={styles.header}> Login component </Text>
 				<TextInput style={styles.input} placeholder="User name"
 						   onChangeText={this.onUserNameChanged.bind(this)}>
