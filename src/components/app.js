@@ -25,26 +25,26 @@ class App extends Component {
 		};
 	}
 
-	renderScene(route, navigator) {
-		const Component = route.component;
-
-		return (
-			<View style={{flex:1}}>
-				<NavigationBar
-					backgroundStyle={{backgroundColor: "#eee"}}
-					navigator={navigator}
-					route={route}
-					title={route.title}
-					titleColor="#333"
-				/>
-				<Component
-					navigator={navigator}
-					route={route}
-					{...route.passProps}
-				/>
-			</View>
-		);
-	}
+	// renderScene(route, navigator) {
+	// 	const Component = route.component;
+	//
+	// 	return (
+	// 		<View style={{flex:1}}>
+	// 			<NavigationBar
+	// 				backgroundStyle={{backgroundColor: "#eee"}}
+	// 				navigator={navigator}
+	// 				route={route}
+	// 				title={route.title}
+	// 				titleColor="#333"
+	// 			/>
+	// 			<Component
+	// 				navigator={navigator}
+	// 				route={route}
+	// 				{...route.passProps}
+	// 			/>
+	// 		</View>
+	// 	);
+	// }
 
 	render() {
 		let tabBarStyle = {};
@@ -69,14 +69,7 @@ class App extends Component {
 					renderIcon={() => <Image style={styles.image} source={require('image!ic_feed')}/> }
 					renderSelectedIcon={() => <Image style={styles.image} source={require('image!ic_feed')}/>}
 					onPress={() => this.setState({ selectedTab: 'home' })}>
-					<Navigator
-						style={styles.navigationBar}
-						renderScene={this.renderScene}
-						initialRoute={{
-							component: Feed,
-							title: 'Feed'
-						}}
-					/>
+					<Feed {...this.props}/>
 				</TabNavigator.Item>
 
 				<TabNavigator.Item

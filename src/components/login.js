@@ -92,12 +92,6 @@ class Login extends React.Component {
 			return (<ProgressBar style={styles.progress}/>);
 		}
 
-		if (this.state.isLoggedIn) {
-			return (
-				<App/>
-			);
-		}
-
 		var errorView = <View/>;
 		if (!this.state.success && this.state.badCredentials) {
 			errorView = <Text style={styles.error}>
@@ -110,20 +104,6 @@ class Login extends React.Component {
 				We experienced an unexpected issue
 			</Text>;
 		}
-
-		// if (this.state.isLoggedIn) {
-		// 	// this.props.navigator.push({
-		// 	// 	title: 'Image component list',
-		// 	// 	passProps: {
-		// 	// 		p1: 'custom prop'
-		// 	// 	},
-		// 	// 	component: App
-		// 	// });
-		//
-		// 	return (
-		// 		<App/>
-		// 	);
-		// }
 
 		return (
 			<View style={styles.container}>
@@ -161,12 +141,14 @@ class Login extends React.Component {
 			username: this.state.username,
 			password: this.state.password
 		}, (results) => {
+			debugger;
 			if (results.success) {
 				this.setState(Object.assign({
 					showProgress: false,
 					isLoggedIn: true
 				}));
 
+				// TODO pass App component throw passProps
 				this.props.navigator.push({
 					title: 'Image component list',
 					passProps: {

@@ -148,7 +148,8 @@ class Feed extends Component {
 Feed.propTypes = {
 	dispatch: React.PropTypes.func,
 	message: React.PropTypes.string,
-	isFetching: React.PropTypes.bool
+	isFetching: React.PropTypes.bool,
+	navigator: React.PropTypes.object
 };
 
 Feed.defaultProps = {

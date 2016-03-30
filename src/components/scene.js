@@ -2,16 +2,58 @@
 /*eslint-disable prefer-const */
 
 import React from "react-native";
+import {connect} from "../../node_modules/react-redux";
 import App from "../components/app";
 import Login from "../components/login";
 import NavigationBar from "./navigation-bar";
+import authService from '../helpers/AuthService';
+import ProgressBar from 'ProgressBarAndroid';
+import {fetchData} from "../actions";
+
 
 let {
 	Navigator,
-	View
+	View,
+	Component,
+	StyleSheet
 	} = React;
 
-class Scene extends React.Component {
+
+let styles = StyleSheet.create({
+	container: {
+		flex: 1,
+		backgroundColor: '#F5FCFF',
+		paddingTop: 40,
+		alignItems: 'center',
+		padding: 10
+	},
+	progress: {
+		marginTop: 20
+	}
+});
+
+
+class Scene extends Component {
+
+	constructor(props) {
+		super(props);
+		this.state = {
+			showProgress: false,
+			isLoggedIn: false,
+			checkingAuth: true
+		};
+	}
+
+	componentDidMount() {
+		this.props.dispatch(fetchData());
+		authService.getAuthInfo((err, authInfo) => {
+			this.setState({
+				checkingAuth: false,
+				isLoggedIn: authInfo != null
+			});
+		});
+	}
+
 	renderScene(route:Object, navigator:Object) {
 		const Component = route.component;
 
@@ -34,17 +76,39 @@ class Scene extends React.Component {
 	}
 
 	render() {
+		if (this.state.checkingAuth) {
+			return (<ProgressBar style={styles.progress}/>);
+		}
+
+		var component = this.state.isLoggedIn ? App : Login;
+		var title = this.state.isLoggedIn ? 'Feed2' : 'Login';
 		return (
 			<Navigator
 				style={{flex: 1}}
 				renderScene={this.renderScene}
 				initialRoute={{
-                    component: Login,
-                    title: "Starter App"
+                    component: component,
+                    title: title
                 }}
 			/>
 		);
 	}
 }
 
-export default Scene;
+Scene.propTypes = {
+	dispatch: React.PropTypes.func,
+	message: React.PropTypes.string,
+	isFetching: React.PropTypes.bool
+};
+
+Scene.defaultProps = {
+	dispatch: () => {
+	},
+	isFetching: false,
+	message: ""
+};
+
+export default connect((state) => ({
+	isFetching: state.data.isFetching,
+	message: state.data.message
+}))(Scene);
