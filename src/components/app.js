@@ -4,6 +4,7 @@ import {connect} from "../../node_modules/react-redux";
 import TabNavigator from 'react-native-tab-navigator';
 import React from 'react-native';
 import Feed from './feed';
+import Search from './search';
 import NavigationBar from "./navigation-bar";
 
 let {
@@ -24,27 +25,6 @@ class App extends Component {
 			showTabBar: true
 		};
 	}
-
-	// renderScene(route, navigator) {
-	// 	const Component = route.component;
-	//
-	// 	return (
-	// 		<View style={{flex:1}}>
-	// 			<NavigationBar
-	// 				backgroundStyle={{backgroundColor: "#eee"}}
-	// 				navigator={navigator}
-	// 				route={route}
-	// 				title={route.title}
-	// 				titleColor="#333"
-	// 			/>
-	// 			<Component
-	// 				navigator={navigator}
-	// 				route={route}
-	// 				{...route.passProps}
-	// 			/>
-	// 		</View>
-	// 	);
-	// }
 
 	render() {
 		let tabBarStyle = {};
@@ -73,12 +53,12 @@ class App extends Component {
 				</TabNavigator.Item>
 
 				<TabNavigator.Item
-					selected={this.state.selectedTab === 'home2'}
-					title="Home 2"
+					selected={this.state.selectedTab === 'search'}
+					title="Search"
 					renderIcon={() => <Image style={styles.image} source={require('image!ic_search')}/> }
 					renderSelectedIcon={() => <Image style={styles.image} source={require('image!ic_search')}/>}
-					onPress={() => this.setState({ selectedTab: 'home2' })}>
-					<Text>test 2</Text>
+					onPress={() => this.setState({ selectedTab: 'search' })}>
+					<Search {...this.props}/>
 				</TabNavigator.Item>
 
 			</TabNavigator>

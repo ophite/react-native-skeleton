@@ -71,7 +71,6 @@ class PushPayload extends Component {
 		};
 	}
 
-	// TODO add space between central text descr and this text
 	renderRow(rowData) {
 		return (
 			<View style={styles.row}>

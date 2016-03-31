@@ -81,7 +81,7 @@ class Scene extends Component {
 		}
 
 		var component = this.state.isLoggedIn ? App : Login;
-		var title = this.state.isLoggedIn ? 'Feed2' : 'Login';
+		var title = this.state.isLoggedIn ? 'Home' : 'Login';
 		return (
 			<Navigator
 				style={{flex: 1}}
