@@ -1,9 +1,7 @@
 'use strict';
 
+import React from 'react-native';
 import {connect} from "../../node_modules/react-redux";
-import TabNavigator from 'react-native-tab-navigator';
-let React = require('react-native');
-import authService from '../helpers/AuthService';
 import ProgressBar from 'ProgressBarAndroid';
 
 let {
@@ -13,16 +11,19 @@ let {
 	View,
 	ListView,
 	Image,
-	TouchableHighlight
 } = React;
 
 let styles = StyleSheet.create({
-	container: {
+	containerProgress: {
 		flex: 1,
 		backgroundColor: '#F5FCFF',
 		paddingTop: 40,
 		alignItems: 'center',
 		padding: 10
+	},
+	container: {
+		flex: 1,
+		justifyContent: 'flex-start'
 	},
 	repoCell: {
 		width: 50,
@@ -35,13 +36,25 @@ let styles = StyleSheet.create({
 	repoCellLabel: {
 		textAlign: 'center'
 	},
-	image: {
-		height: 36,
-		width: 36,
-		borderRadius: 18
-	},
 	progress: {
 		marginTop: 20
+	},
+	rowContainer: {
+		padding: 20,
+		borderColor: '#D7D7D7',
+		borderBottomWidth: 1,
+		backgroundColor: '#fff'
+	},
+	rowInnerContainer: {
+		flex: 1,
+		flexDirection: 'row',
+		justifyContent: 'space-between',
+		marginTop: 20,
+		marginBottom: 20
+	},
+	textFullName: {
+		fontSize: 20,
+		fontWeight: '600'
 	}
 });
 
@@ -65,10 +78,28 @@ class SearchResults extends Component {
 		this.doSearch();
 	}
 
+	render() {
+		if (this.state.showProgress) {
+			return (
+				<View style={styles.containerProgress}>
+					<ProgressBar style={styles.progress}/>
+				</View>
+			);
+		}
+
+		return (
+			<View style={styles.container}>
+				<ListView dataSource={this.state.dataSource}
+						  renderRow={this.renderRow.bind(this)}/>
+			</View>
+		);
+	}
+
 	doSearch() {
 		let url = 'https://api.github.com/search/repositories?q=' +
 			encodeURIComponent(this.state.searchQuery);
 
+		//TODO move to API
 		fetch(url)
 			.then((response) => response.json())
 			.then((responseData) => {
@@ -86,26 +117,12 @@ class SearchResults extends Component {
 
 	renderRow(rowData) {
 		return (
-			<View style={{
-				padding: 20,
-				borderColor: '#D7D7D7',
-				borderBottomWidth: 1,
-				backgroundColor: '#fff'
-			}}>
-				<Text style={{
-						fontSize: 20,
-						fontWeight:'600'
-					}}>
+			<View style={styles.rowContainer}>
+				<Text style={styles.textFullName}>
 					{rowData.full_name}
 				</Text>
-				<View style={{
-					flex: 1,
-					flexDirection: 'row',
-					justifyContent: 'space-between',
-					marginTop: 20,
-					marginBottom: 20
-				}}>
 
+				<View style={styles.rowInnerContainer}>
 					<View style={styles.repoCell}>
 						<Image source={require('image!ic_star')}
 							   style={styles.repoCellIcon}>
@@ -132,28 +149,8 @@ class SearchResults extends Component {
 							{rowData.open_issues}
 						</Text>
 					</View>
-
 				</View>
-			</View>
-		);
-	}
 
-	render() {
-		if (this.state.showProgress) {
-			return (
-				<View style={styles.container}>
-					<ProgressBar style={styles.progress}/>
-				</View>
-			);
-		}
-
-		return (
-			<View style={{
-				flex:1,
-				justifyContent: 'flex-start'}}>
-				<ListView
-					dataSource={this.state.dataSource}
-					renderRow={this.renderRow.bind(this)}/>
 			</View>
 		);
 	}

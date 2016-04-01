@@ -1,9 +1,7 @@
 'use strict';
 
+import React from 'react-native';
 import {connect} from "../../node_modules/react-redux";
-import TabNavigator from 'react-native-tab-navigator';
-let React = require('react-native');
-import authService from '../helpers/AuthService';
 import moment from 'moment';
 
 let {
@@ -29,7 +27,6 @@ let styles = StyleSheet.create({
 	},
 	textCreatedAt: {
 		paddingTop: 20,
-		// paddingBottom: 20,
 		fontSize: 20
 	},
 	row: {
@@ -37,7 +34,6 @@ let styles = StyleSheet.create({
 		justifyContent: 'center',
 		borderColor: '#D7D7D7',
 		borderBottomWidth: 1,
-		// borderTopWidth: 1,
 		paddingTop: 20,
 		paddingBottom: 20,
 		padding: 10
@@ -47,12 +43,14 @@ let styles = StyleSheet.create({
 	},
 	textCommitsLength: {
 		paddingTop: 20,
-		// paddingBottom: 40,
 		fontSize: 20
 	},
 	bold: {
 		fontWeight: '800',
 		fontSize: 16
+	},
+	listView: {
+		top: -50
 	}
 });
 
@@ -71,38 +69,42 @@ class PushPayload extends Component {
 		};
 	}
 
-	renderRow(rowData) {
-		return (
-			<View style={styles.row}>
-				<Text>{rowData.sha.substring(0, 6)} - {rowData.message}</Text>
-			</View>
-		);
-	}
-
 	render() {
 		return (
 			<View style={styles.container}>
+
 				<Image style={styles.image}
-					   source={{uri: this.state.pushEvent.actor.avatar_url}}
-				/>
+					   source={{uri: this.state.pushEvent.actor.avatar_url}}/>
+
 				<Text style={styles.textCreatedAt}>
 					{moment(this.state.pushEvent.created_at).fromNow()}
 				</Text>
-				<Text><Text style={styles.bold}>{this.state.pushEvent.actor.login}</Text></Text>
+
+				<Text>
+					<Text style={styles.bold}>{this.state.pushEvent.actor.login}</Text>
+				</Text>
+
 				<Text>{this.state.pushEvent.payload.ref.replace('refs/heads/', '')}</Text>
+
 				<Text style={styles.textRepoName}>
 					at <Text style={styles.bold}>{this.state.pushEvent.repo.name}</Text>
 				</Text>
+
 				<Text style={styles.textCommitsLength}>
 					{this.state.pushEvent.payload.commits.length} Commits
 				</Text>
 
-				<ListView
-					contentInset={{
-						top:-50
-					}}
-					dataSource={this.state.dataSource}
-					renderRow={this.renderRow.bind(this)}/>
+				<ListView contentInset={styles.listView}
+						  dataSource={this.state.dataSource}
+						  renderRow={this.renderRow.bind(this)}/>
+			</View>
+		);
+	}
+
+	renderRow(rowData) {
+		return (
+			<View style={styles.row}>
+				<Text>{rowData.sha.substring(0, 6)} - {rowData.message}</Text>
 			</View>
 		);
 	}

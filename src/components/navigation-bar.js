@@ -1,5 +1,8 @@
-/* @flow */
 /*eslint-disable prefer-const */
+
+const NAV_BAR_HEIGHT = 44;
+const STATUS_BAR_HEIGHT = 20;
+const NAV_HEIGHT = NAV_BAR_HEIGHT + STATUS_BAR_HEIGHT;
 
 import React from "react-native";
 
@@ -8,12 +11,9 @@ let {
 	StyleSheet,
 	Text,
 	TouchableOpacity,
-	View
-	} = React;
-
-const NAV_BAR_HEIGHT = 44;
-const STATUS_BAR_HEIGHT = 20;
-const NAV_HEIGHT = NAV_BAR_HEIGHT + STATUS_BAR_HEIGHT;
+	View,
+	Component
+} = React;
 
 const styles = StyleSheet.create({
 	navBarContainer: {
@@ -62,13 +62,35 @@ const styles = StyleSheet.create({
 	}
 });
 
-class NavigationBar extends React.Component {
+class NavigationBar extends Component {
+
+	render() {
+
+		if (this.props.statusBar === "lightContent") {
+			StatusBarIOS.setStyle("light-content", false);
+		} else if (this.props.statusBar === "default") {
+			StatusBarIOS.setStyle("default", false);
+		}
+
+		let { style, backgroundStyle } = this.props;
+
+		return (
+			<View style={[styles.navBarContainer, backgroundStyle ]}>
+				<View style={[styles.navBar, style]}>
+					{this.getTitleElement()}
+					{this.getLeftButtonElement()}
+					{this.getRightButtonElement()}
+				</View>
+			</View>
+		);
+	}
+
 	prevButtonShouldBeHidden():Boolean {
 		let {
 			onPrev,
 			hidePrev,
 			navigator
-			} = this.props;
+		} = this.props;
 
 		const getCurrentRoutes = navigator.getCurrentRoutes;
 
@@ -86,7 +108,7 @@ class NavigationBar extends React.Component {
 			route,
 			buttonsColor,
 			customPrev
-			} = this.props;
+		} = this.props;
 
 		if (customPrev) {
 			return React.cloneElement(customPrev, { navigator, route });
@@ -97,7 +119,6 @@ class NavigationBar extends React.Component {
 		}
 
 		const customStyle = buttonsColor ? { color: buttonsColor } : {};
-
 		let onPress = navigator.pop;
 
 		if (onPrev) {
@@ -107,7 +128,7 @@ class NavigationBar extends React.Component {
 		return (
 			<TouchableOpacity onPress={onPress}>
 				<View style={styles.navBarLeftButton}>
-					<Text style={[styles.navBarText, styles.navBarButtonText, customStyle ]}>
+					<Text style={[styles.navBarText, styles.navBarButtonText, customStyle]}>
 						{prevTitle || "Back"}
 					</Text>
 				</View>
@@ -122,7 +143,7 @@ class NavigationBar extends React.Component {
 			customTitle,
 			navigator,
 			route
-			} = this.props;
+		} = this.props;
 
 		if (customTitle) {
 			return (
@@ -157,7 +178,7 @@ class NavigationBar extends React.Component {
 			route,
 			buttonsColor,
 			customNext
-			} = this.props;
+		} = this.props;
 
 		if (customNext) {
 			return React.cloneElement(customNext, { navigator, route });
@@ -177,26 +198,6 @@ class NavigationBar extends React.Component {
 					</Text>
 				</View>
 			</TouchableOpacity>
-		);
-	}
-
-	render() {
-		if (this.props.statusBar === "lightContent") {
-			StatusBarIOS.setStyle("light-content", false);
-		} else if (this.props.statusBar === "default") {
-			StatusBarIOS.setStyle("default", false);
-		}
-
-		let { style, backgroundStyle } = this.props;
-
-		return (
-			<View style={[styles.navBarContainer, backgroundStyle ]}>
-				<View style={[styles.navBar, style ]}>
-					{this.getTitleElement()}
-					{this.getLeftButtonElement()}
-					{this.getRightButtonElement()}
-				</View>
-			</View>
 		);
 	}
 }

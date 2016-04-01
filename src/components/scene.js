@@ -3,12 +3,12 @@
 
 import React from "react-native";
 import {connect} from "../../node_modules/react-redux";
+import ProgressBar from 'ProgressBarAndroid';
 import App from "../components/app";
 import Login from "../components/login";
 import NavigationBar from "./navigation-bar";
-import authService from '../helpers/AuthService';
-import ProgressBar from 'ProgressBarAndroid';
 import {fetchData} from "../actions";
+import authService from '../helpers/AuthService';
 
 
 let {
@@ -16,16 +16,12 @@ let {
 	View,
 	Component,
 	StyleSheet
-	} = React;
+} = React;
 
 
 let styles = StyleSheet.create({
 	container: {
-		flex: 1,
-		backgroundColor: '#F5FCFF',
-		paddingTop: 40,
-		alignItems: 'center',
-		padding: 10
+		flex: 1
 	},
 	progress: {
 		marginTop: 20
@@ -54,11 +50,30 @@ class Scene extends Component {
 		});
 	}
 
+	render() {
+		if (this.state.checkingAuth) {
+			return (<ProgressBar style={styles.progress}/>);
+		}
+
+		var component = this.state.isLoggedIn ? App : Login;
+		var title = this.state.isLoggedIn ? 'Home' : 'Login';
+
+		return (
+			<Navigator style={styles.container}
+					   renderScene={this.renderScene}
+					   initialRoute={{
+							component: component,
+							title: title
+						}}/>
+		);
+	}
+
+	//TODO maybe do everywhere like this
 	renderScene(route:Object, navigator:Object) {
 		const Component = route.component;
 
 		return (
-			<View style={{flex: 1}}>
+			<View style={styles.container}>
 				<NavigationBar
 					backgroundStyle={{backgroundColor: "#eee"}}
 					navigator={navigator}
@@ -72,25 +87,6 @@ class Scene extends Component {
 					{...route.passProps}
 				/>
 			</View>
-		);
-	}
-
-	render() {
-		if (this.state.checkingAuth) {
-			return (<ProgressBar style={styles.progress}/>);
-		}
-
-		var component = this.state.isLoggedIn ? App : Login;
-		var title = this.state.isLoggedIn ? 'Home' : 'Login';
-		return (
-			<Navigator
-				style={{flex: 1}}
-				renderScene={this.renderScene}
-				initialRoute={{
-                    component: component,
-                    title: title
-                }}
-			/>
 		);
 	}
 }

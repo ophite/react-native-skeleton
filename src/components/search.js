@@ -1,21 +1,18 @@
-/* @flow */
 /*eslint-disable prefer-const */
 
 import React from "react-native";
 import {connect} from "../../node_modules/react-redux";
-import {fetchData} from "../actions";
-import ProgressBar from 'ProgressBarAndroid';
-import App from "./app";
-import authService from '../helpers/AuthService';
 import SearchResults from './SearchResults';
+import {fetchData} from "../actions";
+import authService from '../helpers/AuthService';
+
 let {
 	Text,
 	View,
-	ScrollView,
 	StyleSheet,
-	Image,
 	TextInput,
 	TouchableHighlight,
+	Component
 } = React;
 
 let styles = StyleSheet.create({
@@ -25,14 +22,6 @@ let styles = StyleSheet.create({
 		paddingTop: 100,
 		alignItems: 'center',
 		padding: 10
-	},
-	logo: {
-		width: 166,
-		height: 155
-	},
-	header: {
-		fontSize: 30,
-		marginTop: 10
 	},
 	input: {
 		height: 50,
@@ -57,7 +46,7 @@ let styles = StyleSheet.create({
 });
 
 
-class Search extends React.Component {
+class Search extends Component {
 
 	constructor(props) {
 		super(props);
@@ -78,32 +67,22 @@ class Search extends React.Component {
 		return (
 			<View style={styles.container}>
 
-				<TextInput
-					style={styles.input}
-					placeholder="Search holder"
-					onChangeText={(text) => {
-						this.setState({
-							searchQuery: text
-						});
-					}}>
+				<TextInput style={styles.input}
+						   placeholder="Search holder"
+						   onChangeText={(text) => {
+								this.setState({
+									searchQuery: text
+								});
+							}}>
 				</TextInput>
 
-				<TouchableHighlight
-					style={styles.button}
-					onPress={this.onSearchPressed.bind(this)}>
+				<TouchableHighlight style={styles.button}
+									onPress={this.onSearchPressed.bind(this)}>
 					<Text style={styles.buttonText}> Search </Text>
 				</TouchableHighlight>
 
 			</View>
 		);
-	}
-
-	onUserPassChanged(text) {
-		this.setState({ password: text });
-	}
-
-	onUserNameChanged(text) {
-		this.setState({ username: text });
 	}
 
 	onSearchPressed() {

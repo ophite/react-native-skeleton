@@ -1,12 +1,12 @@
-import buffer from 'buffer';
 import {AsyncStorage} from 'react-native';
+import buffer from 'buffer';
 
-const authKey = 'auth';
-const userKey = 'user';
+const AUTH_KEY = 'auth';
+const USER_KEY = 'user';
 
 class AuthService {
 	getAuthInfo(callback) {
-		AsyncStorage.multiGet([authKey, userKey], (err, val) => {
+		AsyncStorage.multiGet([ AUTH_KEY, USER_KEY ], (err, val) => {
 			if (err) {
 				return callback(err);
 			}
@@ -17,19 +17,19 @@ class AuthService {
 
 			let zippedObj = {};
 			val.forEach((item) => {
-				zippedObj[item[0]] = item[1];
+				zippedObj[ item[ 0 ] ] = item[ 1 ];
 			});
 
 			// let zippedObj = _.zipObject(val);
-			if (!zippedObj[authKey]) {
+			if (!zippedObj[ AUTH_KEY ]) {
 				return callback();
 			}
 
 			let authInfo = {
 				header: {
-					Authorization: 'Basic ' + zippedObj[authKey]
+					Authorization: 'Basic ' + zippedObj[ AUTH_KEY ]
 				},
-				user: JSON.parse(zippedObj[userKey])
+				user: JSON.parse(zippedObj[ USER_KEY ])
 			};
 
 			return callback(null, authInfo);
@@ -58,8 +58,8 @@ class AuthService {
 			.then(response => response.json())
 			.then((results) => {
 				AsyncStorage.multiSet([
-					[ authKey, encodedAuth ],
-					[ userKey, JSON.stringify(results) ]
+					[ AUTH_KEY, encodedAuth ],
+					[ USER_KEY, JSON.stringify(results) ]
 				], (err) => {
 					if (err) {
 						throw err;
@@ -76,4 +76,4 @@ class AuthService {
 	}
 }
 
-module.exports = new AuthService();
+export default new AuthService();

@@ -1,22 +1,20 @@
-/* @flow */
 /*eslint-disable prefer-const */
 
 import React from "react-native";
 import {connect} from "../../node_modules/react-redux";
-import {fetchData} from "../actions";
 import ProgressBar from 'ProgressBarAndroid';
 import App from "./app";
+import {fetchData} from "../actions";
 import authService from '../helpers/AuthService';
-//import App from 'app';
 
 let {
 	Text,
 	View,
-	ScrollView,
 	StyleSheet,
 	Image,
 	TextInput,
 	TouchableHighlight,
+	Component
 } = React;
 
 let styles = StyleSheet.create({
@@ -65,7 +63,7 @@ let styles = StyleSheet.create({
 });
 
 
-class Login extends React.Component {
+class Login extends Component {
 
 	constructor(props) {
 		super(props);
@@ -87,35 +85,43 @@ class Login extends React.Component {
 	}
 
 	render() {
-
 		if (this.state.checkingAuth) {
 			return (<ProgressBar style={styles.progress}/>);
 		}
 
 		var errorView = <View/>;
 		if (!this.state.success && this.state.badCredentials) {
-			errorView = <Text style={styles.error}>
-				That username and password combination did not work
-			</Text>;
+			errorView = (
+				<Text style={styles.error}>
+					That username and password combination did not work
+				</Text>
+			);
 		}
 
 		if (!this.state.success && this.state.unknownError) {
-			errorView = <Text style={styles.error}>
-				We experienced an unexpected issue
-			</Text>;
+			errorView = (
+				<Text style={styles.error}>
+					We experienced an unexpected issue
+				</Text>
+			);
 		}
 
 		return (
 			<View style={styles.container}>
-				<Image style={styles.logo} source={require('image!ic_launcher')} />
+				<Image style={styles.logo}
+					   source={require('image!ic_launcher')}/>
 				<Text style={styles.header}> Login component </Text>
-				<TextInput style={styles.input} placeholder="User name"
+				<TextInput style={styles.input}
+						   placeholder="User name"
 						   onChangeText={this.onUserNameChanged.bind(this)}>
 				</TextInput>
-				<TextInput style={styles.input} placeholder="Password"
-						   onChangeText={this.onUserPassChanged.bind(this)} secureTextEntry={true}>
+				<TextInput style={styles.input}
+						   placeholder="Password"
+						   onChangeText={this.onUserPassChanged.bind(this)}
+						   secureTextEntry={true}>
 				</TextInput>
-				<TouchableHighlight style={styles.button} onPress={this.onLoginPressed.bind(this)}>
+				<TouchableHighlight style={styles.button}
+									onPress={this.onLoginPressed.bind(this)}>
 					<Text style={styles.buttonText}> Log in </Text>
 				</TouchableHighlight>
 
@@ -136,12 +142,11 @@ class Login extends React.Component {
 
 	onLoginPressed() {
 		this.setState({ showProgress: true });
-		// this.setState({ showProgress: !this.state.showProgress });
+
 		authService.login({
 			username: this.state.username,
 			password: this.state.password
 		}, (results) => {
-			debugger;
 			if (results.success) {
 				this.setState(Object.assign({
 					showProgress: false,

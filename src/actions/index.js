@@ -1,4 +1,3 @@
-/* @flow */
 /*global setTimeout*/
 
 export const REQUEST_DATA = "REQUEST_DATA";

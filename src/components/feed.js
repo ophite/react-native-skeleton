@@ -1,11 +1,10 @@
 'use strict';
 
+import React from 'react-native';
 import {connect} from "../../node_modules/react-redux";
-import TabNavigator from 'react-native-tab-navigator';
-let React = require('react-native');
-import authService from '../helpers/AuthService';
 import ProgressBar from 'ProgressBarAndroid';
 import moment from 'moment';
+import authService from '../helpers/AuthService';
 import PushPayload from './pushPayload';
 
 let {
@@ -19,12 +18,17 @@ let {
 } = React;
 
 let styles = StyleSheet.create({
-	container: {
+	containerProgress: {
 		flex: 1,
 		backgroundColor: '#F5FCFF',
 		paddingTop: 40,
 		alignItems: 'center',
 		padding: 10
+	},
+	container: {
+		flex: 1,
+		backgroundColor: '#F5FCFF',
+		justifyContent: 'flex-start'
 	},
 	row: {
 		flex: 1,
@@ -41,6 +45,16 @@ let styles = StyleSheet.create({
 	},
 	progress: {
 		marginTop: 20
+	},
+	text: {
+		backgroundColor: '#fff'
+	}
+	,
+	textRepoName: {
+		fontWeight: 'bold'
+	},
+	textView: {
+		paddingLeft: 20
 	}
 });
 
@@ -63,6 +77,25 @@ class Feed extends Component {
 		this.fetchFeed();
 	}
 
+	render() {
+		if (this.state.showProgress) {
+			return (
+				<View style={styles.containerProgress}>
+					<ProgressBar style={styles.progress}/>
+				</View>
+			);
+		}
+
+		return (
+			<View style={styles.container}>
+				<ListView
+					dataSource={this.state.dataSource}
+					renderRow={this.renderRow.bind(this)}/>
+			</View>
+		);
+	}
+
+	//TODO move to API
 	fetchFeed() {
 		authService.getAuthInfo((err, authInfo)=> {
 			let url = 'https://api.github.com/users/'
@@ -98,49 +131,26 @@ class Feed extends Component {
 			<TouchableHighlight
 				onPress={()=> this.pressRow(rowData)}
 				underlayColor='#ddd'>
+
 				<View style={styles.row}>
 					<Image style={styles.image}
 						   source={{uri: rowData.actor.avatar_url}}/>
-					<View style={{
-					paddingLeft: 20
-				}}>
-						<Text style={{backgroundColor: '#fff'}}>
+					<View style={styles.textView}>
+						<Text style={styles.text}>
 							{moment(rowData.created_at).fromNow()}
 						</Text>
-						<Text style={{backgroundColor: '#fff'}}>
+						<Text style={styles.text}>
 							{rowData.actor.login}
 						</Text>
-						<Text style={{backgroundColor: '#fff'}}>
+						<Text style={styles.text}>
 							{rowData.payload.ref.replace('refs/heads/', '')}
 						</Text>
-						<Text style={{backgroundColor: '#fff'}}>
-							at <Text style={{
-							fontWeight: 'bold'
-						}}>{rowData.repo.name}</Text>
+						<Text style={styles.text}>
+							at <Text style={styles.textRepoName}>{rowData.repo.name}</Text>
 						</Text>
 					</View>
 				</View>
 			</TouchableHighlight>
-		);
-	}
-
-	render() {
-		if (this.state.showProgress) {
-			return (
-				<View style={styles.container}>
-					<ProgressBar style={styles.progress}/>
-				</View>
-			);
-		}
-
-		return (
-			<View style={{
-				flex:1,
-				justifyContent: 'flex-start'}}>
-				<ListView
-					dataSource={this.state.dataSource}
-					renderRow={this.renderRow.bind(this)}/>
-			</View>
 		);
 	}
 }
@@ -153,8 +163,7 @@ Feed.propTypes = {
 };
 
 Feed.defaultProps = {
-	dispatch: () => {
-	},
+	dispatch: () => {},
 	isFetching: false,
 	message: ""
 };
