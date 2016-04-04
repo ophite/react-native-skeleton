@@ -2,7 +2,6 @@
 
 import React from "react-native";
 import ProgressBar from 'ProgressBarAndroid';
-import App from "./app";
 import authService from '../helpers/AuthService';
 
 let {
@@ -151,13 +150,12 @@ class Login extends Component {
 					isLoggedIn: true
 				}));
 
-				// TODO pass App component throw passProps
 				this.props.navigator.push({
 					title: 'Image component list',
 					passProps: {
 						p1: 'custom prop'
 					},
-					component: App
+					component: this.props.nextScreen
 				});
 			} else {
 				this.setState(Object.assign({
@@ -186,5 +184,9 @@ class Login extends Component {
 		// }, 1000);
 	}
 }
+
+Login.propTypes = {
+	nextScreen: React.PropTypes.func
+};
 
 export default Login;

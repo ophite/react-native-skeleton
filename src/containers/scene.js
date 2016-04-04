@@ -4,7 +4,7 @@ import React from "react-native";
 import {connect} from "../../node_modules/react-redux";
 import ProgressBar from 'ProgressBarAndroid';
 import App from "../components/app";
-import Login from "../components/login";
+import Login from "./login";
 import NavigationBar from "./../components/navigation-bar";
 import {fetchData} from "../actions";
 import authService from '../helpers/AuthService';
@@ -54,19 +54,22 @@ class Scene extends Component {
 			return (<ProgressBar style={styles.progress}/>);
 		}
 
-		var component = this.state.isLoggedIn ? App : Login;
-		var title = this.state.isLoggedIn ? 'Feed' : 'Login';
+		const component = this.state.isLoggedIn ? App : Login;
+		const title = this.state.isLoggedIn ? 'Feed' : 'Login';
+		const nextScreen = this.state.isLoggedIn ? null : App;
 
 		return (
 			<Navigator style={styles.container}
 					   renderScene={this.renderScene}
 					   initialRoute={{
 							component: component,
-							title: title
+							title: title,
+							passProps: { nextScreen }
 						}}/>
 		);
 	}
 
+	// TODO flow config see
 	//TODO maybe do everywhere like this
 	renderScene(route:Object, navigator:Object) {
 		const Component = route.component;
