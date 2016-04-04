@@ -1,4 +1,3 @@
-/* @flow */
 /*eslint-disable prefer-const */
 
 import React from "react-native";
@@ -56,7 +55,7 @@ class Scene extends Component {
 		}
 
 		var component = this.state.isLoggedIn ? App : Login;
-		var title = this.state.isLoggedIn ? 'Home' : 'Login';
+		var title = this.state.isLoggedIn ? 'Feed' : 'Login';
 
 		return (
 			<Navigator style={styles.container}

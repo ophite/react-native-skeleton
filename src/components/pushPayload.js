@@ -51,7 +51,7 @@ let styles = StyleSheet.create({
 	},
 	listView: {
 		top: -50
-	}
+	} // warning using it in ListView style   contentInset={styles.listView} in android!!!
 });
 
 
@@ -94,7 +94,7 @@ class PushPayload extends Component {
 					{this.state.pushEvent.payload.commits.length} Commits
 				</Text>
 
-				<ListView contentInset={styles.listView}
+				<ListView
 						  dataSource={this.state.dataSource}
 						  renderRow={this.renderRow.bind(this)}/>
 			</View>

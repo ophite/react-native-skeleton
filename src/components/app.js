@@ -31,7 +31,7 @@ class App extends Component {
 	constructor(props, context) {
 		super(props, context);
 		this.state = {
-			selectedTab: 'home'
+			selectedTab: 'feed'
 		};
 	}
 
@@ -40,15 +40,15 @@ class App extends Component {
 			<TabNavigator tabBarStyle={styles.tabBar} sceneStyle={styles.scene}>
 
 				<TabNavigator.Item
-					selected={this.state.selectedTab === 'home'}
-					title="Home"
+					selected={this.state.selectedTab === 'feed'}
+					title="Feed"
 					renderIcon={() => <Image
 										style={styles.image}
 										source={require('image!ic_feed')}/> }
 					renderSelectedIcon={() => <Image
 										style={styles.image}
 										source={require('image!ic_feed')}/>}
-					onPress={() => this.setState({ selectedTab: 'home' })}>
+					onPress={() => this.setState({ selectedTab: 'feed' })}>
 					<Feed {...this.props}/>
 				</TabNavigator.Item>
 
