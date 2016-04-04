@@ -1,7 +1,6 @@
 'use strict';
 
 import React from 'react-native';
-import {connect} from "../../node_modules/react-redux";
 import ProgressBar from 'ProgressBarAndroid';
 import moment from 'moment';
 import authService from '../helpers/AuthService';
@@ -156,19 +155,7 @@ class Feed extends Component {
 }
 
 Feed.propTypes = {
-	dispatch: React.PropTypes.func,
-	message: React.PropTypes.string,
-	isFetching: React.PropTypes.bool,
 	navigator: React.PropTypes.object
 };
 
-Feed.defaultProps = {
-	dispatch: () => {},
-	isFetching: false,
-	message: ""
-};
-
-export default connect((state) => ({
-	isFetching: state.data.isFetching,
-	message: state.data.message
-}))(Feed);
+export default Feed;

@@ -1,10 +1,8 @@
 /*eslint-disable prefer-const */
 
 import React from "react-native";
-import {connect} from "../../node_modules/react-redux";
 import ProgressBar from 'ProgressBarAndroid';
 import App from "./app";
-import {fetchData} from "../actions";
 import authService from '../helpers/AuthService';
 
 let {
@@ -75,7 +73,6 @@ class Login extends Component {
 	}
 
 	componentDidMount() {
-		this.props.dispatch(fetchData());
 		authService.getAuthInfo((err, authInfo) => {
 			this.setState({
 				checkingAuth: false,
@@ -143,6 +140,7 @@ class Login extends Component {
 	onLoginPressed() {
 		this.setState({ showProgress: true });
 
+		// TODO maybe because of this its not component but container
 		authService.login({
 			username: this.state.username,
 			password: this.state.password
@@ -189,20 +187,4 @@ class Login extends Component {
 	}
 }
 
-Login.propTypes = {
-	dispatch: React.PropTypes.func,
-	message: React.PropTypes.string,
-	isFetching: React.PropTypes.bool
-};
-
-Login.defaultProps = {
-	dispatch: () => {
-	},
-	isFetching: false,
-	message: ""
-};
-
-export default connect((state) => ({
-	isFetching: state.data.isFetching,
-	message: state.data.message
-}))(Login);
+export default Login;

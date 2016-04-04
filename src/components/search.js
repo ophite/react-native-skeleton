@@ -1,9 +1,7 @@
 /*eslint-disable prefer-const */
 
 import React from "react-native";
-import {connect} from "../../node_modules/react-redux";
 import SearchResults from './SearchResults';
-import {fetchData} from "../actions";
 import authService from '../helpers/AuthService';
 
 let {
@@ -54,7 +52,6 @@ class Search extends Component {
 	}
 
 	componentDidMount() {
-		this.props.dispatch(fetchData());
 		authService.getAuthInfo((err, authInfo) => {
 			this.setState({
 				checkingAuth: false,
@@ -96,20 +93,4 @@ class Search extends Component {
 	}
 }
 
-Search.propTypes = {
-	dispatch: React.PropTypes.func,
-	message: React.PropTypes.string,
-	isFetching: React.PropTypes.bool
-};
-
-Search.defaultProps = {
-	dispatch: () => {
-	},
-	isFetching: false,
-	message: ""
-};
-
-export default connect((state) => ({
-	isFetching: state.data.isFetching,
-	message: state.data.message
-}))(Search);
+export default Search;

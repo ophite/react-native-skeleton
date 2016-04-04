@@ -1,7 +1,6 @@
 'use strict';
 
 import React from 'react-native';
-import {connect} from "../../node_modules/react-redux";
 import moment from 'moment';
 
 let {
@@ -110,20 +109,4 @@ class PushPayload extends Component {
 	}
 }
 
-PushPayload.propTypes = {
-	dispatch: React.PropTypes.func,
-	message: React.PropTypes.string,
-	isFetching: React.PropTypes.bool
-};
-
-PushPayload.defaultProps = {
-	dispatch: () => {
-	},
-	isFetching: false,
-	message: ""
-};
-
-export default connect((state) => ({
-	isFetching: state.data.isFetching,
-	message: state.data.message
-}))(PushPayload);
+export default PushPayload;

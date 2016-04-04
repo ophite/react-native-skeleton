@@ -1,7 +1,6 @@
 'use strict';
 
 import React from 'react-native';
-import {connect} from "../../node_modules/react-redux";
 import ProgressBar from 'ProgressBarAndroid';
 
 let {
@@ -156,21 +155,4 @@ class SearchResults extends Component {
 	}
 }
 
-SearchResults.propTypes = {
-	dispatch: React.PropTypes.func,
-	message: React.PropTypes.string,
-	isFetching: React.PropTypes.bool,
-	navigator: React.PropTypes.object
-};
-
-SearchResults.defaultProps = {
-	dispatch: () => {
-	},
-	isFetching: false,
-	message: ""
-};
-
-export default connect((state) => ({
-	isFetching: state.data.isFetching,
-	message: state.data.message
-}))(SearchResults);
+export default SearchResults;

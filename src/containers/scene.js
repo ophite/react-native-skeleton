@@ -5,7 +5,7 @@ import {connect} from "../../node_modules/react-redux";
 import ProgressBar from 'ProgressBarAndroid';
 import App from "../components/app";
 import Login from "../components/login";
-import NavigationBar from "./navigation-bar";
+import NavigationBar from "./../components/navigation-bar";
 import {fetchData} from "../actions";
 import authService from '../helpers/AuthService';
 
