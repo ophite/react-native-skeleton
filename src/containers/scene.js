@@ -7,8 +7,9 @@ import App from "../components/app";
 import Login from "./login";
 import NavigationBar from "./../components/navigation-bar";
 import {fetchData} from "../actions";
-import authService from '../helpers/AuthService';
-
+import * as actions from '../actions/login';
+import {bindActionCreators} from 'redux';
+import {isLoginRequireSelector} from '../selectors/login';
 
 let {
 	Navigator,
@@ -33,44 +34,47 @@ class Scene extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			showProgress: false,
-			isLoggedIn: false,
-			checkingAuth: false
+			showProgressAuthChecking: false,
+			isLoggedIn: false
 		};
 	}
 
 	componentDidMount() {
-		// this.props.dispatch(fetchData());
-		// authService.getAuthInfo((err, authInfo) => {
-		// 	this.setState({
-		// 		checkingAuth: false,
-		// 		isLoggedIn: false// authInfo != null
-		// 	});
-		// });
+		this.props.loginActions.loginIsLoggedRequest();
 	}
 
 	render() {
-		if (this.state.checkingAuth) {
+		// debugger;
+		if (this.props.showProgressAuthChecking) {
 			return (<ProgressBar style={styles.progress}/>);
 		}
 
-		const component = this.state.isLoggedIn ? App : Login;
-		const title = this.state.isLoggedIn ? 'Feed' : 'Login';
-		const nextScreen = this.state.isLoggedIn ? null : App;
+		const componentInfo = this.getFirstComponentInfo();
 
 		return (
 			<Navigator style={styles.container}
-					   renderScene={this.renderScene}
-					   initialRoute={{
-							component: component,
-							title: title,
-							passProps: { nextScreen }
+								 renderScene={this.renderScene}
+								 initialRoute={{
+							...componentInfo
 						}}/>
 		);
 	}
 
-	// TODO flow config see
-	//TODO maybe do everywhere like this
+	getFirstComponentInfo() {
+		// debugger;
+		const component = this.props.isLoggedIn ? App : Login;
+		const title = this.props.isLoggedIn ? 'Feed' : 'Login';
+		const nextScreen = this.props.isLoggedIn ? null : App;
+
+		return {
+			component,
+			title,
+			passProps: {
+				nextScreen
+			}
+		};
+	}
+
 	renderScene(route:Object, navigator:Object) {
 		const Component = route.component;
 
@@ -93,20 +97,10 @@ class Scene extends Component {
 	}
 }
 
-Scene.propTypes = {
-	dispatch: React.PropTypes.func,
-	message: React.PropTypes.string,
-	isFetching: React.PropTypes.bool
+const mapDispatchToProps = (dispatch) => {
+	return {
+		loginActions: bindActionCreators(actions, dispatch)
+	}
 };
 
-Scene.defaultProps = {
-	dispatch: () => {
-	},
-	isFetching: false,
-	message: ""
-};
-
-export default connect((state) => ({
-	isFetching: state.data.isFetching,
-	message: state.data.message
-}))(Scene);
+export default connect(isLoginRequireSelector, mapDispatchToProps)(Scene);

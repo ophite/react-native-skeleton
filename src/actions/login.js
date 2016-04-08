@@ -1,14 +1,3 @@
-import authService from '../helpers/AuthService';
-
-// // Triggered whenever the user clicks the login submit button
-// export const LOGIN_SUBMIT = 'core_auth/LOGIN_SUBMIT';
-// export function loginSubmit(data) {
-// 	return {
-// 		type: LOGIN_SUBMIT,
-// 		payload: data
-// 	};
-// }
-
 // Triggered whenever a login request is dispatched from whenever point in the code
 export const LOGIN_REQUEST = 'LOGIN_REQUEST';
 export const loginRequest = (data) => {
@@ -42,5 +31,28 @@ export const LOGOUT = 'LOGOUT';
 export const logout = () => {
 	return {
 		type: LOGOUT
+	};
+};
+
+
+
+export const LOGIN_IS_LOGGED_REQUEST = 'LOGIN_IS_LOGGED_REQUEST';
+export const loginIsLoggedRequest = (data) => {
+	return {
+		type: LOGIN_IS_LOGGED_REQUEST
+	};
+};
+
+export const LOGIN_IS_LOGGED_SUCCESS = 'LOGIN_IS_LOGGED_SUCCESS';
+export const loginIsLoggedSuccess = (data) => {
+	return {
+		type: LOGIN_IS_LOGGED_SUCCESS
+	};
+};
+
+export const LOGIN_IS_LOGGED_ERROR = 'LOGIN_IS_LOGGED_ERROR';
+export const loginIsLoggedError = (data) => {
+	return {
+		type: LOGIN_IS_LOGGED_ERROR
 	};
 };

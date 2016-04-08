@@ -6,7 +6,7 @@ import ProgressBar from 'ProgressBarAndroid';
 // import authService from '../helpers/AuthService';
 import {bindActionCreators} from 'redux';
 import * as actions from '../actions/login';
-import loginRequireSelector from '../selectors/login';
+import {loginRequireSelector} from '../selectors/login';
 
 let {
 	Text,
@@ -79,18 +79,8 @@ class Login extends Component {
 		};
 	}
 
-	componentDidMount() {
-		// authService.getAuthInfo((err, authInfo) => {
-		// 	this.setState({
-		// 		checkingAuth: false,
-		// 		isLoggedIn: authInfo != null
-		// 	});
-		// });
-	}
-
 	componentWillReceiveProps(nextProps) {
 		// login
-		// debugger;
 		if (!this.props.isLoggedIn && nextProps.isLoggedIn) {
 			console.log('PUSHING TO MAIN');
 			nextProps.navigator.push({
@@ -108,8 +98,6 @@ class Login extends Component {
 			nextProps.loginActions.logout();
 			return;
 		}
-
-		console.log('rest')
 	}
 
 	render() {
@@ -172,22 +160,14 @@ class Login extends Component {
 	}
 }
 
-// const auth = state => state.auth;
-
-const mapStateToProps = (state) => {
-	return {
-		...state.auth
-	}
+Login.propTypes = {
+	nextScreen: React.PropTypes.func
 };
 
 const mapDispatchToProps = (dispatch) => {
 	return {
 		loginActions: bindActionCreators(actions, dispatch)
 	}
-};
-
-Login.propTypes = {
-	nextScreen: React.PropTypes.func
 };
 
 export default connect(loginRequireSelector, mapDispatchToProps)(Login);
