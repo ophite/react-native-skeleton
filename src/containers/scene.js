@@ -35,18 +35,18 @@ class Scene extends Component {
 		this.state = {
 			showProgress: false,
 			isLoggedIn: false,
-			checkingAuth: true
+			checkingAuth: false
 		};
 	}
 
 	componentDidMount() {
-		this.props.dispatch(fetchData());
-		authService.getAuthInfo((err, authInfo) => {
-			this.setState({
-				checkingAuth: false,
-				isLoggedIn: false// authInfo != null
-			});
-		});
+		// this.props.dispatch(fetchData());
+		// authService.getAuthInfo((err, authInfo) => {
+		// 	this.setState({
+		// 		checkingAuth: false,
+		// 		isLoggedIn: false// authInfo != null
+		// 	});
+		// });
 	}
 
 	render() {

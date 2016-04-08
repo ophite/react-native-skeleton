@@ -41,23 +41,21 @@ const users = (state = {}, action) => {
 const auth = (state = {}, action) => {
 	if (!action) return state;
 
+	// debugger;
+
 	switch (action.type) {
 		case LOGIN_REQUEST:
 			return {
-				...state,
 				showProgress: true
 			};
 		case LOGIN_SUCCESS:
-			debugger;
 			return {
-				...state,
 				...action.token,
-				showProgress: false,
-				success: true
+				isLoggedIn: true,
+				showProgress: false
 			};
 		case LOGIN_ERROR:
 			return {
-				...state,
 				...action.error,
 				showProgress: false,
 				success: false

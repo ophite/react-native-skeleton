@@ -73,7 +73,8 @@ class Login extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			showProgress: false
+			showProgress: false,
+			isLoggedIn: false
 		};
 	}
 
@@ -84,6 +85,31 @@ class Login extends Component {
 		// 		isLoggedIn: authInfo != null
 		// 	});
 		// });
+	}
+
+	componentWillReceiveProps(nextProps) {
+		// debugger;
+
+		// login
+		if (!this.props.isLoggedIn && nextProps.isLoggedIn) {
+			console.log('PUSHING TO MAIN');
+			nextProps.navigator.push({
+				title: 'Image component list',
+				passProps: {
+					p1: 'custom prop'
+				},
+				component: nextProps.nextScreen
+			});
+			return;
+		}
+
+		// logout from next screen after login
+		if (this.props.isLoggedIn && !nextProps.isLoggedIn) {
+			nextProps.loginActions.logout();
+			return;
+		}
+
+		console.log('rest')
 	}
 
 	render() {
