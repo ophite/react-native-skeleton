@@ -7,15 +7,17 @@ const data = (state = { isFetching: false, message: "" }, action) => {
 	switch (action.type) {
 
 		case types.REQUEST_DATA:
-			return Object.assign({}, state, {
+			return {
+				...state,
 				isFetching: true
-			});
+			};
 
 		case types.RECEIVE_DATA:
-			return Object.assign({}, state, {
+			return {
+				...state,
 				isFetching: false,
 				message: action.data.message
-			});
+			};
 
 		default:
 			return state;
@@ -50,15 +52,14 @@ const auth = (state = {}, action) => {
 			};
 		case LOGIN_SUCCESS:
 			return {
-				...action.token,
+				'token': action.token,
 				isLoggedIn: true,
 				showProgress: false
 			};
 		case LOGIN_ERROR:
 			return {
-				...action.error,
+				'error': action.error,
 				showProgress: false,
-				success: false
 			};
 		case LOGOUT:
 			return null;

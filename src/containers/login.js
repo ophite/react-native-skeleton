@@ -6,6 +6,7 @@ import ProgressBar from 'ProgressBarAndroid';
 // import authService from '../helpers/AuthService';
 import {bindActionCreators} from 'redux';
 import * as actions from '../actions/login';
+import loginRequireSelector from '../selectors/login';
 
 let {
 	Text,
@@ -88,9 +89,8 @@ class Login extends Component {
 	}
 
 	componentWillReceiveProps(nextProps) {
-		// debugger;
-
 		// login
+		// debugger;
 		if (!this.props.isLoggedIn && nextProps.isLoggedIn) {
 			console.log('PUSHING TO MAIN');
 			nextProps.navigator.push({
@@ -103,7 +103,7 @@ class Login extends Component {
 			return;
 		}
 
-		// logout from next screen after login
+		// When on next screen click left button then before you login again you need to logout for login flow in saga
 		if (this.props.isLoggedIn && !nextProps.isLoggedIn) {
 			nextProps.loginActions.logout();
 			return;
@@ -113,13 +113,12 @@ class Login extends Component {
 	}
 
 	render() {
-		// debugger;
 		if (Login.localState.checkingAuth) {
 			return (<ProgressBar style={styles.progress}/>);
 		}
 
 		var errorView = <View/>;
-		if (!this.props.success && this.props.badCredentials) {
+		if (this.props.error && this.props.error.badCredentials) {
 			errorView = (
 				<Text style={styles.error}>
 					That username and password combination did not work
@@ -127,7 +126,7 @@ class Login extends Component {
 			);
 		}
 
-		if (!this.props.success && this.props.unknownError) {
+		if (this.props.error && this.props.error.unknownError) {
 			errorView = (
 				<Text style={styles.error}>
 					We experienced an unexpected issue
@@ -169,55 +168,11 @@ class Login extends Component {
 	}
 
 	onLoginPressed() {
-		// this.setState({ showProgress: true });
-		// Login.localState.checkingAuth = true;
 		this.props.loginActions.loginRequest(Login.localState);
-
-		// TODO maybe because of this its not component but container
-		// authService.login({
-		// 	username: this.state.username,
-		// 	password: this.state.password
-		// }, (results) => {
-		// 	if (results.success) {
-		// 		this.setState(Object.assign({
-		// 			showProgress: false,
-		// 			isLoggedIn: true
-		// 		}));
-		//
-		// 		this.props.navigator.push({
-		// 			title: 'Image component list',
-		// 			passProps: {
-		// 				p1: 'custom prop'
-		// 			},
-		// 			component: this.props.nextScreen
-		// 		});
-		// 	} else {
-		// 		this.setState(Object.assign({
-		// 			showProgress: false,
-		// 			isLoggedIn: false
-		// 		}, results));
-		// 	}
-		// });
-
-		// mock
-		// setTimeout(() => {
-		// 	console.log('login pressed', this.state.username);
-		// 	console.log('progress', this.state.showProgress);
-		//
-		// 	this.props.navigator.push({
-		// 		title: 'Image component list',
-		// 		passProps: {
-		// 			p1: 'custom prop'
-		// 		},
-		// 		component: App
-		// 	});
-		// 	//this.setState({
-		// 	//    showProgress: !this.state.showProgress,
-		// 	//    isLoggedIn: true
-		// 	//});
-		// }, 1000);
 	}
 }
+
+// const auth = state => state.auth;
 
 const mapStateToProps = (state) => {
 	return {
@@ -235,4 +190,4 @@ Login.propTypes = {
 	nextScreen: React.PropTypes.func
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Login);
+export default connect(loginRequireSelector, mapDispatchToProps)(Login);
