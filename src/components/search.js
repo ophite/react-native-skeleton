@@ -52,6 +52,7 @@ class Search extends Component {
 	}
 
 	componentDidMount() {
+		//TODO why ???
 		authService.getAuthInfo((err, authInfo) => {
 			this.setState({
 				checkingAuth: false,

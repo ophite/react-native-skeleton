@@ -57,22 +57,30 @@ class AuthService {
 			})
 			.then(response => response.json())
 			.then((results) => {
-				AsyncStorage.multiSet([
-					[ AUTH_KEY, encodedAuth ],
-					[ USER_KEY, JSON.stringify(results) ]
-				], (err) => {
-					if (err) {
-						throw err;
-					}
 
-					return callback({
-						success: true
-					});
-					// console.log('>>>>> ' + JSON.stringify(results));
-				});
-
+				return {
+					authKey: encodedAuth,
+					userKey: results
+				};
+				// AsyncStorage.multiSet([
+				// 	[ AUTH_KEY, encodedAuth ],
+				// 	[ USER_KEY, JSON.stringify(results) ]
+				// ], (err) => {
+				// 	if (err) {
+				// 		throw err;
+				// 	}
+				//
+				// 	return callback({
+				// 		success: true
+				// 	});
+				// 	// console.log('>>>>> ' + JSON.stringify(results));
+				// });
 			})
-			.catch(err => callback(err));
+			.catch(err => { throw err; });
+			// .catch(err => {
+			// 	return err;
+			// 	callback(err);
+			// });
 	}
 }
 

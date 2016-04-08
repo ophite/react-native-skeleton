@@ -44,7 +44,7 @@ class Scene extends Component {
 		authService.getAuthInfo((err, authInfo) => {
 			this.setState({
 				checkingAuth: false,
-				isLoggedIn: authInfo != null
+				isLoggedIn: false// authInfo != null
 			});
 		});
 	}

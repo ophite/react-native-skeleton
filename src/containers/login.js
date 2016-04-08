@@ -1,8 +1,11 @@
 /*eslint-disable prefer-const */
 
 import React from "react-native";
+import {connect} from "../../node_modules/react-redux";
 import ProgressBar from 'ProgressBarAndroid';
-import authService from '../helpers/AuthService';
+// import authService from '../helpers/AuthService';
+import {bindActionCreators} from 'redux';
+import * as actions from '../actions/login';
 
 let {
 	Text,
@@ -13,6 +16,7 @@ let {
 	TouchableHighlight,
 	Component
 } = React;
+
 
 let styles = StyleSheet.create({
 	container: {
@@ -62,31 +66,34 @@ let styles = StyleSheet.create({
 
 class Login extends Component {
 
+	static localState = {
+		checkingAuth: false
+	};
+
 	constructor(props) {
 		super(props);
 		this.state = {
-			showProgress: false,
-			isLoggedIn: false,
-			checkingAuth: true
+			showProgress: false
 		};
 	}
 
 	componentDidMount() {
-		authService.getAuthInfo((err, authInfo) => {
-			this.setState({
-				checkingAuth: false,
-				isLoggedIn: authInfo != null
-			});
-		});
+		// authService.getAuthInfo((err, authInfo) => {
+		// 	this.setState({
+		// 		checkingAuth: false,
+		// 		isLoggedIn: authInfo != null
+		// 	});
+		// });
 	}
 
 	render() {
-		if (this.state.checkingAuth) {
+		// debugger;
+		if (Login.localState.checkingAuth) {
 			return (<ProgressBar style={styles.progress}/>);
 		}
 
 		var errorView = <View/>;
-		if (!this.state.success && this.state.badCredentials) {
+		if (!this.props.success && this.props.badCredentials) {
 			errorView = (
 				<Text style={styles.error}>
 					That username and password combination did not work
@@ -94,7 +101,7 @@ class Login extends Component {
 			);
 		}
 
-		if (!this.state.success && this.state.unknownError) {
+		if (!this.props.success && this.props.unknownError) {
 			errorView = (
 				<Text style={styles.error}>
 					We experienced an unexpected issue
@@ -105,65 +112,66 @@ class Login extends Component {
 		return (
 			<View style={styles.container}>
 				<Image style={styles.logo}
-					   source={require('image!ic_launcher')}/>
+							 source={require('image!ic_launcher')}/>
 				<Text style={styles.header}> Login component </Text>
 				<TextInput style={styles.input}
-						   placeholder="User name"
-						   onChangeText={this.onUserNameChanged.bind(this)}>
+									 placeholder="User name"
+									 onChangeText={this.onUsernameChange.bind(this)}>
 				</TextInput>
 				<TextInput style={styles.input}
-						   placeholder="Password"
-						   onChangeText={this.onUserPassChanged.bind(this)}
-						   secureTextEntry={true}>
+									 placeholder="Password"
+									 onChangeText={this.onPasswordChange.bind(this)}
+									 secureTextEntry={true}>
 				</TextInput>
 				<TouchableHighlight style={styles.button}
-									onPress={this.onLoginPressed.bind(this)}>
+														onPress={this.onLoginPressed.bind(this)}>
 					<Text style={styles.buttonText}> Log in </Text>
 				</TouchableHighlight>
 
 				{errorView}
-
-				{this.state.showProgress ? (<ProgressBar style={styles.progress}/>) : (<View></View>)}
+				{this.props.showProgress ? (<ProgressBar style={styles.progress}/>) : (<View></View>)}
 			</View>
 		);
 	}
 
-	onUserPassChanged(text) {
-		this.setState({ password: text });
+	onPasswordChange(text) {
+		Login.localState.password = text;
 	}
 
-	onUserNameChanged(text) {
-		this.setState({ username: text });
+	onUsernameChange(text) {
+		Login.localState.username = text;
 	}
 
 	onLoginPressed() {
-		this.setState({ showProgress: true });
+		// this.setState({ showProgress: true });
+		// Login.localState.checkingAuth = true;
+		this.props.loginActions.loginRequest(Login.localState);
 
 		// TODO maybe because of this its not component but container
-		authService.login({
-			username: this.state.username,
-			password: this.state.password
-		}, (results) => {
-			if (results.success) {
-				this.setState(Object.assign({
-					showProgress: false,
-					isLoggedIn: true
-				}));
-
-				this.props.navigator.push({
-					title: 'Image component list',
-					passProps: {
-						p1: 'custom prop'
-					},
-					component: this.props.nextScreen
-				});
-			} else {
-				this.setState(Object.assign({
-					showProgress: false,
-					isLoggedIn: false
-				}, results));
-			}
-		});
+		// authService.login({
+		// 	username: this.state.username,
+		// 	password: this.state.password
+		// }, (results) => {
+		// 	if (results.success) {
+		// 		this.setState(Object.assign({
+		// 			showProgress: false,
+		// 			isLoggedIn: true
+		// 		}));
+		//
+		// 		this.props.navigator.push({
+		// 			title: 'Image component list',
+		// 			passProps: {
+		// 				p1: 'custom prop'
+		// 			},
+		// 			component: this.props.nextScreen
+		// 		});
+		// 	} else {
+		// 		this.setState(Object.assign({
+		// 			showProgress: false,
+		// 			isLoggedIn: false
+		// 		}, results));
+		// 	}
+		// });
 
 		// mock
 		// setTimeout(() => {
@@ -185,8 +193,20 @@ class Login extends Component {
 	}
 }
 
+const mapStateToProps = (state) => {
+	return {
+		...state.auth
+	}
+};
+
+const mapDispatchToProps = (dispatch) => {
+	return {
+		loginActions: bindActionCreators(actions, dispatch)
+	}
+};
+
 Login.propTypes = {
 	nextScreen: React.PropTypes.func
 };
 
-export default Login;
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
