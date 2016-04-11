@@ -3,7 +3,7 @@
 import React from "react-native";
 import {connect} from "../../node_modules/react-redux";
 import {bindActionCreators} from 'redux';
-import ProgressBar from 'ProgressBarAndroid';
+import ProgressBar from './progress';
 
 import SearchResults from './searchResults';
 
@@ -49,10 +49,7 @@ let styles = StyleSheet.create({
 		fontSize: 22,
 		color: '#FFF',
 		alignSelf: 'center'
-	},
-	progress: {
-		marginTop: 20
-	},
+	}
 });
 
 
@@ -91,7 +88,7 @@ class Search extends Component {
 					<Text style={styles.buttonText}> Search </Text>
 				</TouchableHighlight>
 
-				{this.props.searchSelector.showProgress ? (<ProgressBar style={styles.progress}/>) : (<View></View>)}
+				{this.props.searchSelector.showProgress ? (<ProgressBar/>) : (<View></View>)}
 
 			</View>
 		);

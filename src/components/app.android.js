@@ -26,6 +26,7 @@ let styles = StyleSheet.create({
 	}
 });
 
+
 class App extends Component {
 	constructor(props, context) {
 		super(props, context);

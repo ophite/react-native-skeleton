@@ -4,7 +4,7 @@ import React from 'react-native';
 import {connect} from "../../node_modules/react-redux";
 import {bindActionCreators} from 'redux';
 
-import ProgressBar from 'ProgressBarAndroid';
+import ProgressBar from './progress';
 import moment from 'moment';
 
 import PushPayload from './pushPayload';
@@ -48,9 +48,6 @@ let styles = StyleSheet.create({
 		width: 36,
 		borderRadius: 18
 	},
-	progress: {
-		marginTop: 20
-	},
 	text: {
 		backgroundColor: '#fff'
 	}
@@ -78,7 +75,7 @@ class Feed extends Component {
 		if (this.props.feedSelector.showProgress) {
 			return (
 				<View style={styles.containerProgress}>
-					<ProgressBar style={styles.progress}/>
+					<ProgressBar/>
 				</View>
 			);
 		}

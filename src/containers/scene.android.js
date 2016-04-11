@@ -4,7 +4,7 @@ import React from "react-native";
 import {connect} from "../../node_modules/react-redux";
 import {bindActionCreators} from 'redux';
 
-import ProgressBar from 'ProgressBarAndroid';
+import ProgressBar from '../components/progress';
 import App from "../components/app";
 import Login from "./login";
 import NavigationBar from "./../components/navigation-bar";
@@ -23,27 +23,19 @@ let {
 let styles = StyleSheet.create({
 	container: {
 		flex: 1
-	},
-	progress: {
-		marginTop: 20
 	}
 });
 
 
 class Scene extends Component {
 
-	constructor(props) {
-		super(props);
-	}
-
 	componentDidMount() {
-		// debugger;
 		this.props.loginActions.loginIsLoggedRequest();
 	}
 
 	render() {
 		if (this.props.showProgress) {
-			return (<ProgressBar style={styles.progress}/>);
+			return (<ProgressBar/>);
 		}
 
 		const componentInfo = this.getFirstComponentInfo();

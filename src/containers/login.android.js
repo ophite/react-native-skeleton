@@ -2,7 +2,7 @@
 
 import React from "react-native";
 import {connect} from "../../node_modules/react-redux";
-import ProgressBar from 'ProgressBarAndroid';
+import ProgressBar from '../components/progress';
 import {bindActionCreators} from 'redux';
 import * as actions from '../actions/loginAction';
 import {loginRequireSelector} from '../selectors/loginSelector';
@@ -53,9 +53,6 @@ let styles = StyleSheet.create({
 		fontSize: 22,
 		color: '#FFF',
 		alignSelf: 'center'
-	},
-	progress: {
-		marginTop: 20
 	},
 	error: {
 		color: 'red',
@@ -134,9 +131,9 @@ class Login extends Component {
 														onPress={this.onLoginPressed.bind(this)}>
 					<Text style={styles.buttonText}> Log in </Text>
 				</TouchableHighlight>
-
+				
 				{errorView}
-				{this.props.showProgress ? (<ProgressBar style={styles.progress}/>) : (<View></View>)}
+				{this.props.showProgress ? (<ProgressBar/>) : (<View></View>)}
 			</View>
 		);
 	}
