@@ -1,10 +1,16 @@
 'use strict';
 
 import React from 'react-native';
+import {connect} from "../../node_modules/react-redux";
+import {bindActionCreators} from 'redux';
+
 import ProgressBar from 'ProgressBarAndroid';
 import moment from 'moment';
-import authService from '../helpers/authService';
+
 import PushPayload from './pushPayload';
+import {feedRequireSelector} from '../selectors/feedSelector';
+import * as feedActions from '../actions/feedAction';
+
 
 let {
 	StyleSheet,
@@ -59,25 +65,21 @@ let styles = StyleSheet.create({
 
 
 class Feed extends Component {
+
+	static dataSource = new ListView.DataSource({
+		rowHasChanged: (r1, r2) => r1 != r2
+	});
+
 	constructor(props, context) {
 		super(props, context);
-
-		let ds = new ListView.DataSource({
-			rowHasChanged: (r1, r2) => r1 != r2
-		});
-
-		this.state = {
-			dataSource: ds,
-			showProgress: true
-		};
 	}
 
 	componentDidMount() {
-		this.fetchFeed();
+		this.props.feedActions.feedRequest(this.props.user, this.props.header);
 	}
 
 	render() {
-		if (this.state.showProgress) {
+		if (this.props.feedSelector.showProgress) {
 			return (
 				<View style={styles.containerProgress}>
 					<ProgressBar style={styles.progress}/>
@@ -88,41 +90,10 @@ class Feed extends Component {
 		return (
 			<View style={styles.container}>
 				<ListView
-					dataSource={this.state.dataSource}
+					dataSource={this.props.dataSource}
 					renderRow={this.renderRow.bind(this)}/>
 			</View>
 		);
-	}
-
-	//TODO move to API
-	fetchFeed() {
-		authService.getAuthInfo((err, authInfo)=> {
-			let url = 'https://api.github.com/users/'
-				+ authInfo.user.login
-				+ '/received_events';
-
-			fetch(url, {
-				headers: authInfo.header
-			})
-				.then((response) => response.json())
-				.then((responseData) => {
-					let feedItems = responseData.filter((ev)=> ev.type === 'PushEvent');
-					this.setState({
-						dataSource: this.state.dataSource.cloneWithRows(feedItems),
-						showProgress: false
-					});
-				});
-		});
-	}
-
-	pressRow(rowData) {
-		this.props.navigator.push({
-			title: 'Push Event',
-			component: PushPayload,
-			passProps: {
-				pushEvent: rowData
-			}
-		});
 	}
 
 	renderRow(rowData) {
@@ -133,7 +104,7 @@ class Feed extends Component {
 
 				<View style={styles.row}>
 					<Image style={styles.image}
-						   source={{uri: rowData.actor.avatar_url}}/>
+								 source={{uri: rowData.actor.avatar_url}}/>
 					<View style={styles.textView}>
 						<Text style={styles.text}>
 							{moment(rowData.created_at).fromNow()}
@@ -152,10 +123,34 @@ class Feed extends Component {
 			</TouchableHighlight>
 		);
 	}
+
+	pressRow(rowData) {
+		this.props.navigator.push({
+			title: 'Push Event',
+			component: PushPayload,
+			passProps: {
+				pushEvent: rowData
+			}
+		});
+	}
 }
 
 Feed.propTypes = {
-	navigator: React.PropTypes.object
+	navigator: React.PropTypes.object,
 };
 
-export default Feed;
+const mapStateToProps = (state) => {
+	let feedItems = state.feed.feedItems ? state.feed.feedItems : [];
+	return {
+		feedSelector: feedRequireSelector(state),
+		dataSource: Feed.dataSource.cloneWithRows(feedItems)
+	}
+};
+
+const mapDispatchToProps = (dispatch) => {
+	return {
+		feedActions: bindActionCreators(feedActions, dispatch)
+	}
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Feed);

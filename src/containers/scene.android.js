@@ -2,12 +2,14 @@
 
 import React from "react-native";
 import {connect} from "../../node_modules/react-redux";
+import {bindActionCreators} from 'redux';
+
 import ProgressBar from 'ProgressBarAndroid';
 import App from "../components/app";
 import Login from "./login";
 import NavigationBar from "./../components/navigation-bar";
-import * as actions from '../actions/loginAction';
-import {bindActionCreators} from 'redux';
+
+import * as loginActions from '../actions/loginAction';
 import {isLoginRequireSelector} from '../selectors/loginSelector';
 
 let {
@@ -32,24 +34,19 @@ class Scene extends Component {
 
 	constructor(props) {
 		super(props);
-		this.state = {
-			showProgressAuthChecking: false,
-			isLoggedIn: false
-		};
 	}
 
 	componentDidMount() {
+		// debugger;
 		this.props.loginActions.loginIsLoggedRequest();
 	}
 
 	render() {
-		// debugger;
-		if (this.props.showProgressAuthChecking) {
+		if (this.props.showProgress) {
 			return (<ProgressBar style={styles.progress}/>);
 		}
 
 		const componentInfo = this.getFirstComponentInfo();
-
 		return (
 			<Navigator style={styles.container}
 								 renderScene={this.renderScene}
@@ -58,16 +55,26 @@ class Scene extends Component {
 	}
 
 	getFirstComponentInfo() {
-		// debugger;
-		const component = this.props.isLoggedIn ? App : Login;
-		const title = this.props.isLoggedIn ? 'Feed' : 'Login';
-		const nextScreen = this.props.isLoggedIn ? null : App;
-
-		return {
-			component,
-			title,
-			passProps: { nextScreen }
-		};
+		switch (this.props.isLoggedIn) {
+			case true:
+				return {
+					component: App,
+					title: 'Feed',
+					passProps: { user: this.props.user, header: this.props.header }
+				};
+			case false:
+				return {
+					component: Login,
+					title: 'Login',
+					passProps: { nextScreen: App }
+				};
+			default:
+				return {
+					component: Login,
+					title: 'Login',
+					passProps: { nextScreen: App }
+				};
+		}
 	}
 
 	renderScene(route:Object, navigator:Object) {
@@ -92,7 +99,7 @@ class Scene extends Component {
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		loginActions: bindActionCreators(actions, dispatch)
+		loginActions: bindActionCreators(loginActions, dispatch)
 	}
 };
 

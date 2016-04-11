@@ -1,12 +1,10 @@
 import {take, put, fork, call, race} from 'redux-saga/effects';
 import authService from '../helpers/authService';
 import {AsyncStorage} from 'react-native';
-import * as typesLogin from '../actions/loginAction';
-import * as typesFeed from '../actions/feedAction';
+import * as typesLogin from '../actions/loginAction'
 
 const AUTH_KEY = 'auth';
 const USER_KEY = 'user';
-
 
 
 // login
@@ -41,7 +39,6 @@ export function* loginFlow() {
 }
 
 
-
 // isLogin
 const authIsAuth = () => {
 	return AsyncStorage.multiGet([ AUTH_KEY, USER_KEY ]);
@@ -50,34 +47,14 @@ const authIsAuth = () => {
 function* isAuhorize() {
 	try {
 		let token = yield call(authIsAuth);
-		let data = authService.getAuthData(token);
-		yield put({ type: typesLogin.LOGIN_IS_LOGGED_SUCCESS, ...data })
+		token = authService.getAuthData(token);
+		yield put({ type: typesLogin.LOGIN_IS_LOGGED_SUCCESS, token })
 	} catch (error) {
 		yield put({ type: typesLogin.LOGIN_IS_LOGGED_ERROR, error })
 	}
 }
-
 export function* isLoginFlow() {
 	yield take(typesLogin.LOGIN_IS_LOGGED_REQUEST);
 	yield fork(isAuhorize);
 	yield take([ typesLogin.LOGIN_IS_LOGGED_SUCCESS, typesLogin.LOGIN_IS_LOGGED_ERROR ]);
-}
-
-
-
-// feed
-function* getFeedData(user, header) {
-	try {
-		let data = yield call(authService.getFeed, user, header);
-		yield put({ type: typesFeed.FEED_SUCCESS, data })
-	} catch (error) {
-		yield put({ type: typesFeed.FEED_ERROR, error })
-	}
-}
-
-export function* feedFlow() {
-	// debugger;
-	const data = yield take(typesFeed.FEED_REQUEST);
-	yield fork(getFeedData, {...data.payload});
-	yield take([ typesFeed.FEED_SUCCESS, typesFeed.FEED_ERROR ]);
 }

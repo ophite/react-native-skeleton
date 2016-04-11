@@ -42,13 +42,16 @@ export const loginIsLoggedRequest = (data) => {
 export const LOGIN_IS_LOGGED_SUCCESS = 'LOGIN_IS_LOGGED_SUCCESS';
 export const loginIsLoggedSuccess = (data) => {
 	return {
-		type: LOGIN_IS_LOGGED_SUCCESS
+		type: LOGIN_IS_LOGGED_SUCCESS,
+		payload: data
 	};
 };
 
 export const LOGIN_IS_LOGGED_ERROR = 'LOGIN_IS_LOGGED_ERROR';
-export const loginIsLoggedError = (data) => {
+export const loginIsLoggedError = (errors) => {
 	return {
-		type: LOGIN_IS_LOGGED_ERROR
+		type: LOGIN_IS_LOGGED_ERROR,
+		error: true,
+		payload: errors
 	};
 };

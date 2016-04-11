@@ -5,7 +5,7 @@ const AUTH_KEY = 'auth';
 const USER_KEY = 'user';
 
 class AuthService {
-	
+
 	getAuthData(val) {
 		if (!val) {
 			return null;
@@ -62,7 +62,19 @@ class AuthService {
 		});
 	}
 
-	login(credentials, callback) {
+	getFeed({user, header}) {
+		let url = 'https://api.github.com/users/' + user.login + '/received_events';
+
+		return fetch(url, {
+			headers: header
+		})
+			.then(response => response.json())
+			.catch(err => {
+				throw err;
+			});
+	}
+
+	login(credentials) {
 		let b = new buffer.Buffer(credentials.username + ":" + credentials.password);
 		let encodedAuth = b.toString('base64');
 
@@ -88,25 +100,10 @@ class AuthService {
 					authKey: encodedAuth,
 					userKey: results
 				};
-				// AsyncStorage.multiSet([
-				// 	[ AUTH_KEY, encodedAuth ],
-				// 	[ USER_KEY, JSON.stringify(results) ]
-				// ], (err) => {
-				// 	if (err) {
-				// 		throw err;
-				// 	}
-				//
-				// 	return callback({
-				// 		success: true
-				// 	});
-				// 	// console.log('>>>>> ' + JSON.stringify(results));
-				// });
 			})
-			.catch(err => { throw err; });
-			// .catch(err => {
-			// 	return err;
-			// 	callback(err);
-			// });
+			.catch(err => {
+				throw err;
+			});
 	}
 }
 

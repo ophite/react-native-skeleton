@@ -30,23 +30,23 @@ export const login = (state = {}, action) => {
 
 export const isLogin = (state = {}, action) => {
 	if (!action) return state;
-	// debugger;
 
 	switch (action.type) {
 		case typesLogin.LOGIN_IS_LOGGED_REQUEST:
 			return {
-				showProgressAuthChecking: true
+				showProgress: true
 			};
 		case typesLogin.LOGIN_IS_LOGGED_SUCCESS:
 			return {
-				'token': action.token,
-				isLoggedIn: action.token != null,
-				showProgressAuthChecking: false
+				token: action.token,
+				isLoggedIn: action.user != null && action.header != null,
+				showProgress: false,
+				...action
 			};
 		case typesLogin.LOGIN_IS_LOGGED_ERROR:
 			return {
-				'error': action.error,
-				showProgressAuthChecking: false
+				error: action.error,
+				showProgress: false
 			};
 		default:
 			return state;
