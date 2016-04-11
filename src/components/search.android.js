@@ -2,7 +2,6 @@
 
 import React from "react-native";
 import SearchResults from './searchResults';
-import authService from '../helpers/authService';
 
 let {
 	Text,
@@ -46,36 +45,21 @@ let styles = StyleSheet.create({
 
 class Search extends Component {
 
-	constructor(props) {
-		super(props);
-		this.state = {};
-	}
-
-	componentDidMount() {
-		//TODO why ???
-		authService.getAuthInfo((err, authInfo) => {
-			this.setState({
-				checkingAuth: false,
-				isLoggedIn: authInfo != null
-			});
-		});
-	}
+	static localState = {
+		searchQuery: false
+	};
 
 	render() {
 		return (
 			<View style={styles.container}>
 
 				<TextInput style={styles.input}
-						   placeholder="Search holder"
-						   onChangeText={(text) => {
-								this.setState({
-									searchQuery: text
-								});
-							}}>
+									 placeholder="Search holder"
+									 onChangeText={this.onSearchChange.bind(this)}>
 				</TextInput>
 
 				<TouchableHighlight style={styles.button}
-									onPress={this.onSearchPressed.bind(this)}>
+														onPress={this.onSearchPressed.bind(this)}>
 					<Text style={styles.buttonText}> Search </Text>
 				</TouchableHighlight>
 
@@ -83,12 +67,16 @@ class Search extends Component {
 		);
 	}
 
+	onSearchChange(text) {
+		Search.localState.searchQuery = text;
+	}
+
 	onSearchPressed() {
 		this.props.navigator.push({
 			component: SearchResults,
 			title: 'Results',
 			passProps: {
-				searchQuery: this.state.searchQuery
+				searchQuery: Search.localState.searchQuery
 			}
 		});
 	}

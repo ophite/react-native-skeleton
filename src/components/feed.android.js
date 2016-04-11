@@ -70,10 +70,6 @@ class Feed extends Component {
 		rowHasChanged: (r1, r2) => r1 != r2
 	});
 
-	constructor(props, context) {
-		super(props, context);
-	}
-
 	componentDidMount() {
 		this.props.feedActions.feedRequest(this.props.user, this.props.header);
 	}
