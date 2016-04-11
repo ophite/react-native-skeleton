@@ -55,6 +55,7 @@ let styles = StyleSheet.create({
 
 
 class PushPayload extends Component {
+
 	constructor(props, context) {
 		super(props, context);
 
@@ -62,10 +63,7 @@ class PushPayload extends Component {
 			rowHasChanged: (r1, r2) => r1 != r2
 		});
 
-		this.state = {
-			dataSource: ds.cloneWithRows(props.pushEvent.payload.commits),
-			pushEvent: props.pushEvent
-		};
+		this.dataSource = ds.cloneWithRows(props.pushEvent.payload.commits);
 	}
 
 	render() {
@@ -73,29 +71,29 @@ class PushPayload extends Component {
 			<View style={styles.container}>
 
 				<Image style={styles.image}
-					   source={{uri: this.state.pushEvent.actor.avatar_url}}/>
+							 source={{uri: this.props.pushEvent.actor.avatar_url}}/>
 
 				<Text style={styles.textCreatedAt}>
-					{moment(this.state.pushEvent.created_at).fromNow()}
+					{moment(this.props.pushEvent.created_at).fromNow()}
 				</Text>
 
 				<Text>
-					<Text style={styles.bold}>{this.state.pushEvent.actor.login}</Text>
+					<Text style={styles.bold}>{this.props.pushEvent.actor.login}</Text>
 				</Text>
 
-				<Text>{this.state.pushEvent.payload.ref.replace('refs/heads/', '')}</Text>
+				<Text>{this.props.pushEvent.payload.ref.replace('refs/heads/', '')}</Text>
 
 				<Text style={styles.textRepoName}>
-					at <Text style={styles.bold}>{this.state.pushEvent.repo.name}</Text>
+					at <Text style={styles.bold}>{this.props.pushEvent.repo.name}</Text>
 				</Text>
 
 				<Text style={styles.textCommitsLength}>
-					{this.state.pushEvent.payload.commits.length} Commits
+					{this.props.pushEvent.payload.commits.length} Commits
 				</Text>
 
 				<ListView
-						  dataSource={this.state.dataSource}
-						  renderRow={this.renderRow.bind(this)}/>
+					dataSource={this.dataSource}
+					renderRow={this.renderRow.bind(this)}/>
 			</View>
 		);
 	}
