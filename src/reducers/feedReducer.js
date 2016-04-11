@@ -12,7 +12,6 @@ export const feed = (state = {}, action) => {
 			let feedItems = action.data.filter((ev)=> ev.type === 'PushEvent');
 			return {
 				feedItems,
-				isLoggedIn: true,
 				showProgress: false
 			};
 		case typesFeed.FEED_ERROR:

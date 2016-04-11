@@ -7,10 +7,10 @@ export const loginRequest = (data) => {
 };
 
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
-export const loginSuccess = ({username, password}) => {
+export const loginSuccess = (data) => {
 	return {
 		type: LOGIN_SUCCESS,
-		payload: {username, password}
+		payload: data
 	};
 };
 
@@ -33,7 +33,7 @@ export const logout = () => {
 
 
 export const LOGIN_IS_LOGGED_REQUEST = 'LOGIN_IS_LOGGED_REQUEST';
-export const loginIsLoggedRequest = (data) => {
+export const loginIsLoggedRequest = () => {
 	return {
 		type: LOGIN_IS_LOGGED_REQUEST
 	};

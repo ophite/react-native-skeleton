@@ -2,7 +2,6 @@ import * as typesLogin from '../actions/loginAction';
 
 export const login = (state = {}, action) => {
 	if (!action) return state;
-	// debugger;
 
 	switch (action.type) {
 		case typesLogin.LOGIN_REQUEST:
@@ -11,9 +10,10 @@ export const login = (state = {}, action) => {
 			};
 		case typesLogin.LOGIN_SUCCESS:
 			return {
-				token: action.token,
+				...state,
 				isLoggedIn: true,
-				showProgress: false
+				showProgress: false,
+				...action
 			};
 		case typesLogin.LOGIN_ERROR:
 			return {
@@ -38,7 +38,7 @@ export const isLogin = (state = {}, action) => {
 			};
 		case typesLogin.LOGIN_IS_LOGGED_SUCCESS:
 			return {
-				token: action.token,
+				...state,
 				isLoggedIn: action.user != null && action.header != null,
 				showProgress: false,
 				...action

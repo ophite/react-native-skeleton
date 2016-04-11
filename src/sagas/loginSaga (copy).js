@@ -11,7 +11,6 @@ function* authorize({ username, password }) {
 		const token = yield call(authService.login, { username, password });
 		yield call(storageService.authSave, token);
 		let data = yield call(storageService.authGet);
-		data = yield call(storageService.convertAuthData, data);
 		yield put({ type: typesLogin.LOGIN_SUCCESS, ...data })
 	} catch (error) {
 		yield put({ type: typesLogin.LOGIN_ERROR, error })
@@ -28,11 +27,11 @@ export function* loginFlow() {
 }
 
 
+
 // isLogin
 function* isAuhorize() {
 	try {
 		let data = yield call(storageService.authGet);
-		data = yield call(storageService.convertAuthData, data);
 		yield put({ type: typesLogin.LOGIN_IS_LOGGED_SUCCESS, ...data })
 	} catch (error) {
 		yield put({ type: typesLogin.LOGIN_IS_LOGGED_ERROR, error })
@@ -40,11 +39,11 @@ function* isAuhorize() {
 }
 
 export function* isLoginFlow() {
-	yield call(storageService.authClear);
 	yield take(typesLogin.LOGIN_IS_LOGGED_REQUEST);
 	yield fork(isAuhorize);
 	yield take([ typesLogin.LOGIN_IS_LOGGED_SUCCESS, typesLogin.LOGIN_IS_LOGGED_ERROR ]);
 }
+
 
 
 // feed
@@ -58,10 +57,12 @@ function* getFeedData(user, header) {
 }
 
 export function* feedFlow() {
+	// debugger;
 	const data = yield take(typesFeed.FEED_REQUEST);
-	yield fork(getFeedData, { ...data.payload });
+	yield fork(getFeedData, {...data.payload});
 	yield take([ typesFeed.FEED_SUCCESS, typesFeed.FEED_ERROR ]);
 }
+
 
 
 // search
@@ -75,6 +76,7 @@ function* getSearchData(searchQuery) {
 }
 
 export function* searchFlow() {
+	// debugger;
 	const searchQuery = yield take(typesSearch.SEARCH_REQUEST);
 	yield fork(getSearchData, searchQuery);
 	yield take([ typesSearch.SEARCH_SUCCESS, typesSearch.SEARCH_ERROR ]);

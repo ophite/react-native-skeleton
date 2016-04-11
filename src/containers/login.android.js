@@ -79,7 +79,8 @@ class Login extends Component {
 		// login
 		if (!this.props.isLoggedIn && nextProps.isLoggedIn) {
 			nextProps.navigator.push({
-				component: nextProps.nextScreen
+				component: nextProps.nextScreen,
+				passProps: { user: nextProps.user, header: nextProps.header }
 			});
 			return;
 		}
