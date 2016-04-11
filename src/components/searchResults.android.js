@@ -1,14 +1,6 @@
 'use strict';
 
 import React from 'react-native';
-import {connect} from "../../node_modules/react-redux";
-import {bindActionCreators} from 'redux';
-
-import ProgressBar from 'ProgressBarAndroid';
-
-import * as searchActions from '../actions/searchAction';
-import {searchRequireSelector} from '../selectors/searchSelector';
-
 
 let {
 	StyleSheet,
@@ -67,27 +59,11 @@ let styles = StyleSheet.create({
 
 class SearchResults extends Component {
 
-	static dataSource = new ListView.DataSource({
-		rowHasChanged: (r1, r2) => r1 != r2
-	});
-
-	componentDidMount() {
-		this.props.searchActions.searchRequest(this.props.searchQuery);
-	}
-
 	render() {
-		if (this.props.searchSelector.showProgress) {
-			return (
-				<View style={styles.containerProgress}>
-					<ProgressBar style={styles.progress}/>
-				</View>
-			);
-		}
-
 		return (
 			<View style={styles.container}>
 				<ListView dataSource={this.props.dataSource}
-						  renderRow={this.renderRow.bind(this)}/>
+									renderRow={this.renderRow.bind(this)}/>
 			</View>
 		);
 	}
@@ -102,7 +78,7 @@ class SearchResults extends Component {
 				<View style={styles.rowInnerContainer}>
 					<View style={styles.repoCell}>
 						<Image source={require('image!ic_star')}
-							   style={styles.repoCellIcon}>
+									 style={styles.repoCellIcon}>
 						</Image>
 						<Text style={styles.repoCellLabel}>
 							{rowData.stargazers_count}
@@ -111,7 +87,7 @@ class SearchResults extends Component {
 
 					<View style={styles.repoCell}>
 						<Image source={require('image!ic_fork')}
-							   style={styles.repoCellIcon}>
+									 style={styles.repoCellIcon}>
 						</Image>
 						<Text style={styles.repoCellLabel}>
 							{rowData.forks}
@@ -120,7 +96,7 @@ class SearchResults extends Component {
 
 					<View style={styles.repoCell}>
 						<Image source={require('image!ic_fork')}
-							   style={styles.repoCellIcon}>
+									 style={styles.repoCellIcon}>
 						</Image>
 						<Text style={styles.repoCellLabel}>
 							{rowData.open_issues}
@@ -133,19 +109,6 @@ class SearchResults extends Component {
 	}
 }
 
-const mapStateToProps = (state) => {
-	let items = state.search.items ? state.search.items : [];
-	return {
-		searchSelector: searchRequireSelector(state),
-		dataSource: SearchResults.dataSource.cloneWithRows(items)
-	}
-};
 
-const mapDispatchToProps = (dispatch) => {
-	return {
-		searchActions: bindActionCreators(searchActions, dispatch)
-	}
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(SearchResults);
+export default SearchResults;
 

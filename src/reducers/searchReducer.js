@@ -6,6 +6,8 @@ export const search = (state = {}, action) => {
 	switch (action.type) {
 		case typesSearch.SEARCH_REQUEST:
 			return {
+				items: null,
+				repositories: null,
 				showProgress: true
 			};
 		case typesSearch.SEARCH_SUCCESS:

@@ -1,7 +1,15 @@
 /*eslint-disable prefer-const */
 
 import React from "react-native";
+import {connect} from "../../node_modules/react-redux";
+import {bindActionCreators} from 'redux';
+import ProgressBar from 'ProgressBarAndroid';
+
 import SearchResults from './searchResults';
+
+import * as searchActions from '../actions/searchAction';
+import {searchRequireSelector} from '../selectors/searchSelector';
+
 
 let {
 	Text,
@@ -9,8 +17,10 @@ let {
 	StyleSheet,
 	TextInput,
 	TouchableHighlight,
+	ListView,
 	Component
 } = React;
+
 
 let styles = StyleSheet.create({
 	container: {
@@ -39,15 +49,33 @@ let styles = StyleSheet.create({
 		fontSize: 22,
 		color: '#FFF',
 		alignSelf: 'center'
-	}
+	},
+	progress: {
+		marginTop: 20
+	},
 });
 
 
 class Search extends Component {
 
 	static localState = {
-		searchQuery: false
+		searchQuery: false,
+		dataSource: new ListView.DataSource({
+			rowHasChanged: (r1, r2) => r1 != r2
+		})
 	};
+
+	componentWillReceiveProps(nextProps) {
+		if (!this.props.searchSelector.items && nextProps.searchSelector.items) {
+			this.props.navigator.push({
+				component: SearchResults,
+				title: 'Results',
+				passProps: {
+					dataSource: nextProps.dataSource
+				}
+			});
+		}
+	}
 
 	render() {
 		return (
@@ -63,6 +91,8 @@ class Search extends Component {
 					<Text style={styles.buttonText}> Search </Text>
 				</TouchableHighlight>
 
+				{this.props.searchSelector.showProgress ? (<ProgressBar style={styles.progress}/>) : (<View></View>)}
+
 			</View>
 		);
 	}
@@ -72,14 +102,23 @@ class Search extends Component {
 	}
 
 	onSearchPressed() {
-		this.props.navigator.push({
-			component: SearchResults,
-			title: 'Results',
-			passProps: {
-				searchQuery: Search.localState.searchQuery
-			}
-		});
+		this.props.searchActions.searchRequest(Search.localState.searchQuery);
 	}
 }
 
-export default Search;
+const mapStateToProps = (state) => {
+	let items = state.search.items ? state.search.items : [];
+	return {
+		searchSelector: searchRequireSelector(state),
+		dataSource: Search.localState.dataSource.cloneWithRows(items)
+	}
+};
+
+const mapDispatchToProps = (dispatch) => {
+	return {
+		searchActions: bindActionCreators(searchActions, dispatch)
+	}
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Search);
+
