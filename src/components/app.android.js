@@ -2,8 +2,8 @@
 
 import React from 'react-native';
 import TabNavigator from 'react-native-tab-navigator';
-import Feed from './feed';
-import Search from './search';
+import Feed from '../containers/feed';
+import Search from '../containers/search';
 
 let {
 	Image,

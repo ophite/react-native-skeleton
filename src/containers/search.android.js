@@ -3,9 +3,9 @@
 import React from "react-native";
 import {connect} from "../../node_modules/react-redux";
 import {bindActionCreators} from 'redux';
-import ProgressBar from './progress';
+import ProgressBar from '../components/progress';
 
-import SearchResults from './searchResults';
+import SearchResults from '../components/searchResults';
 
 import * as searchActions from '../actions/searchAction';
 import {searchRequireSelector} from '../selectors/searchSelector';

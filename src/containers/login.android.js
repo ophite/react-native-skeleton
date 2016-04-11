@@ -2,8 +2,8 @@
 
 import React from "react-native";
 import {connect} from "../../node_modules/react-redux";
-import ProgressBar from '../components/progress';
 import {bindActionCreators} from 'redux';
+import ProgressBar from '../components/progress';
 import * as actions from '../actions/loginAction';
 import {loginRequireSelector} from '../selectors/loginSelector';
 

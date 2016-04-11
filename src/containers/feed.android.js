@@ -4,10 +4,10 @@ import React from 'react-native';
 import {connect} from "../../node_modules/react-redux";
 import {bindActionCreators} from 'redux';
 
-import ProgressBar from './progress';
+import ProgressBar from '../components/progress';
 import moment from 'moment';
 
-import PushPayload from './pushPayload';
+import PushPayload from '../components/pushPayload';
 import {feedRequireSelector} from '../selectors/feedSelector';
 import * as feedActions from '../actions/feedAction';
 
