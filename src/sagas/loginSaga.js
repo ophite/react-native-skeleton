@@ -1,5 +1,5 @@
 import {take, put, fork, call, race} from 'redux-saga/effects';
-import authService from '../helpers/authService';
+import githubAPI from '../helpers/githubAPI';
 import * as storageService from '../helpers/storageService';
 import * as typesLogin from '../actions/loginAction';
 import * as typesFeed from '../actions/feedAction';
@@ -8,7 +8,7 @@ import * as typesSearch from '../actions/searchAction';
 // login
 function* authorize({ username, password }) {
 	try {
-		const token = yield call(authService.login, { username, password });
+		const token = yield call(githubAPI.login, { username, password });
 		yield call(storageService.authSave, token);
 		let data = yield call(storageService.authGet);
 		data = yield call(storageService.convertAuthData, data);
@@ -40,7 +40,6 @@ function* isAuhorize() {
 }
 
 export function* isLoginFlow() {
-	yield call(storageService.authClear);
 	yield take(typesLogin.LOGIN_IS_LOGGED_REQUEST);
 	yield fork(isAuhorize);
 	yield take([ typesLogin.LOGIN_IS_LOGGED_SUCCESS, typesLogin.LOGIN_IS_LOGGED_ERROR ]);
@@ -50,7 +49,7 @@ export function* isLoginFlow() {
 // feed
 function* getFeedData(user, header) {
 	try {
-		let data = yield call(authService.getFeedData, user, header);
+		let data = yield call(githubAPI.getFeedData, user, header);
 		yield put({ type: typesFeed.FEED_SUCCESS, data })
 	} catch (error) {
 		yield put({ type: typesFeed.FEED_ERROR, error })
@@ -67,7 +66,7 @@ export function* feedFlow() {
 // search
 function* getSearchData(searchQuery) {
 	try {
-		let data = yield call(authService.getSearchData, searchQuery);
+		let data = yield call(githubAPI.getSearchData, searchQuery);
 		yield put({ type: typesSearch.SEARCH_SUCCESS, data })
 	} catch (error) {
 		yield put({ type: typesSearch.SEARCH_ERROR, error })

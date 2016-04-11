@@ -1,5 +1,5 @@
 import {take, put, fork, call, race} from 'redux-saga/effects';
-import authService from '../helpers/authService';
+import githubAPI from '../helpers/githubAPI';
 import {AsyncStorage} from 'react-native';
 import * as typesLogin from '../actions/loginAction'
 
@@ -21,7 +21,7 @@ const authClear = () => {
 
 function* authorize({ username, password }) {
 	try {
-		const token = yield call(authService.login, { username, password });
+		const token = yield call(githubAPI.login, { username, password });
 		yield call(authSave, token);
 		yield put({ type: typesLogin.LOGIN_SUCCESS, token })
 	} catch (error) {
@@ -47,7 +47,7 @@ const authIsAuth = () => {
 function* isAuhorize() {
 	try {
 		let token = yield call(authIsAuth);
-		token = authService.getAuthData(token);
+		token = githubAPI.getAuthData(token);
 		yield put({ type: typesLogin.LOGIN_IS_LOGGED_SUCCESS, token })
 	} catch (error) {
 		yield put({ type: typesLogin.LOGIN_IS_LOGGED_ERROR, error })
