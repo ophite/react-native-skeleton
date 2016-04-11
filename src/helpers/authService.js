@@ -62,13 +62,23 @@ class AuthService {
 		});
 	}
 
-	getFeed({user, header}) {
+	getFeedData({user, header}) {
 		let url = 'https://api.github.com/users/' + user.login + '/received_events';
 
 		return fetch(url, {
 			headers: header
 		})
 			.then(response => response.json())
+			.catch(err => {
+				throw err;
+			});
+	}
+
+	getSearchData(searchQuery) {
+		let url = 'https://api.github.com/search/repositories?q=' + encodeURIComponent(searchQuery);
+
+		return fetch(url)
+			.then((response) => response.json())
 			.catch(err => {
 				throw err;
 			});

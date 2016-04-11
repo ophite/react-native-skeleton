@@ -3,6 +3,7 @@ import authService from '../helpers/authService';
 import {AsyncStorage} from 'react-native';
 import * as typesLogin from '../actions/loginAction';
 import * as typesFeed from '../actions/feedAction';
+import * as typesSearch from '../actions/searchAction';
 
 const AUTH_KEY = 'auth';
 const USER_KEY = 'user';
@@ -68,7 +69,7 @@ export function* isLoginFlow() {
 // feed
 function* getFeedData(user, header) {
 	try {
-		let data = yield call(authService.getFeed, user, header);
+		let data = yield call(authService.getFeedData, user, header);
 		yield put({ type: typesFeed.FEED_SUCCESS, data })
 	} catch (error) {
 		yield put({ type: typesFeed.FEED_ERROR, error })
@@ -80,4 +81,23 @@ export function* feedFlow() {
 	const data = yield take(typesFeed.FEED_REQUEST);
 	yield fork(getFeedData, {...data.payload});
 	yield take([ typesFeed.FEED_SUCCESS, typesFeed.FEED_ERROR ]);
+}
+
+
+
+// search
+function* getSearchData(searchQuery) {
+	try {
+		let data = yield call(authService.getSearchData, searchQuery);
+		yield put({ type: typesSearch.SEARCH_SUCCESS, data })
+	} catch (error) {
+		yield put({ type: typesSearch.SEARCH_ERROR, error })
+	}
+}
+
+export function* searchFlow() {
+	// debugger;
+	const searchQuery = yield take(typesSearch.SEARCH_REQUEST);
+	yield fork(getSearchData, searchQuery);
+	yield take([ typesSearch.SEARCH_SUCCESS, typesSearch.SEARCH_ERROR ]);
 }

@@ -1,7 +1,14 @@
 'use strict';
 
 import React from 'react-native';
+import {connect} from "../../node_modules/react-redux";
+import {bindActionCreators} from 'redux';
+
 import ProgressBar from 'ProgressBarAndroid';
+
+import * as searchActions from '../actions/searchAction';
+import {searchRequireSelector} from '../selectors/searchSelector';
+
 
 let {
 	StyleSheet,
@@ -59,26 +66,17 @@ let styles = StyleSheet.create({
 
 
 class SearchResults extends Component {
-	constructor(props, context) {
-		super(props, context);
 
-		let ds = new ListView.DataSource({
-			rowHasChanged: (r1, r2) => r1 != r2
-		});
-
-		this.state = {
-			dataSource: ds,
-			showProgress: true,
-			searchQuery: props.searchQuery
-		};
-	}
+	static dataSource = new ListView.DataSource({
+		rowHasChanged: (r1, r2) => r1 != r2
+	});
 
 	componentDidMount() {
-		this.doSearch();
+		this.props.searchActions.searchRequest(this.props.searchQuery);
 	}
 
 	render() {
-		if (this.state.showProgress) {
+		if (this.props.searchSelector.showProgress) {
 			return (
 				<View style={styles.containerProgress}>
 					<ProgressBar style={styles.progress}/>
@@ -88,30 +86,10 @@ class SearchResults extends Component {
 
 		return (
 			<View style={styles.container}>
-				<ListView dataSource={this.state.dataSource}
+				<ListView dataSource={this.props.dataSource}
 						  renderRow={this.renderRow.bind(this)}/>
 			</View>
 		);
-	}
-
-	doSearch() {
-		let url = 'https://api.github.com/search/repositories?q=' +
-			encodeURIComponent(this.state.searchQuery);
-
-		//TODO move to API
-		fetch(url)
-			.then((response) => response.json())
-			.then((responseData) => {
-				this.setState({
-					repositories: responseData.repositories,
-					dataSource: this.state.dataSource.cloneWithRows(responseData.items)
-				});
-			})
-			.finally(() => {
-				this.setState({
-					showProgress: false
-				});
-			});
 	}
 
 	renderRow(rowData) {
@@ -155,4 +133,19 @@ class SearchResults extends Component {
 	}
 }
 
-export default SearchResults;
+const mapStateToProps = (state) => {
+	let items = state.search.items ? state.search.items : [];
+	return {
+		searchSelector: searchRequireSelector(state),
+		dataSource: SearchResults.dataSource.cloneWithRows(items)
+	}
+};
+
+const mapDispatchToProps = (dispatch) => {
+	return {
+		searchActions: bindActionCreators(searchActions, dispatch)
+	}
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(SearchResults);
+
