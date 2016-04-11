@@ -3,10 +3,9 @@
 import React from "react-native";
 import {connect} from "../../node_modules/react-redux";
 import ProgressBar from 'ProgressBarAndroid';
-// import authService from '../helpers/AuthService';
 import {bindActionCreators} from 'redux';
-import * as actions from '../actions/login';
-import {loginRequireSelector} from '../selectors/login';
+import * as actions from '../actions/loginAction';
+import {loginRequireSelector} from '../selectors/loginSelector';
 
 let {
 	Text,
@@ -82,12 +81,7 @@ class Login extends Component {
 	componentWillReceiveProps(nextProps) {
 		// login
 		if (!this.props.isLoggedIn && nextProps.isLoggedIn) {
-			console.log('PUSHING TO MAIN');
 			nextProps.navigator.push({
-				title: 'Image component list',
-				passProps: {
-					p1: 'custom prop'
-				},
 				component: nextProps.nextScreen
 			});
 			return;

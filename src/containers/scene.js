@@ -6,10 +6,9 @@ import ProgressBar from 'ProgressBarAndroid';
 import App from "../components/app";
 import Login from "./login";
 import NavigationBar from "./../components/navigation-bar";
-import {fetchData} from "../actions";
-import * as actions from '../actions/login';
+import * as actions from '../actions/loginAction';
 import {bindActionCreators} from 'redux';
-import {isLoginRequireSelector} from '../selectors/login';
+import {isLoginRequireSelector} from '../selectors/loginSelector';
 
 let {
 	Navigator,
@@ -54,9 +53,7 @@ class Scene extends Component {
 		return (
 			<Navigator style={styles.container}
 								 renderScene={this.renderScene}
-								 initialRoute={{
-							...componentInfo
-						}}/>
+								 initialRoute={{...componentInfo}}/>
 		);
 	}
 
@@ -69,9 +66,7 @@ class Scene extends Component {
 		return {
 			component,
 			title,
-			passProps: {
-				nextScreen
-			}
+			passProps: { nextScreen }
 		};
 	}
 
@@ -85,13 +80,11 @@ class Scene extends Component {
 					navigator={navigator}
 					route={route}
 					title={route.title}
-					titleColor="#333"
-				/>
+					titleColor="#333"/>
 				<Component
 					navigator={navigator}
 					route={route}
-					{...route.passProps}
-				/>
+					{...route.passProps}/>
 			</View>
 		);
 	}

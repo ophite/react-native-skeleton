@@ -1,4 +1,3 @@
-// Triggered whenever a login request is dispatched from whenever point in the code
 export const LOGIN_REQUEST = 'LOGIN_REQUEST';
 export const loginRequest = (data) => {
 	return {
@@ -7,7 +6,6 @@ export const loginRequest = (data) => {
 	};
 };
 
-// triggered when the login has succeded
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 export const loginSuccess = ({username, password}) => {
 	return {
@@ -16,7 +14,6 @@ export const loginSuccess = ({username, password}) => {
 	};
 };
 
-// triggered when the login failed
 export const LOGIN_ERROR = 'LOGIN_ERROR';
 export const loginError = (errors) => {
 	return {
@@ -26,7 +23,6 @@ export const loginError = (errors) => {
 	};
 };
 
-// triggered to logout the user
 export const LOGOUT = 'LOGOUT';
 export const logout = () => {
 	return {

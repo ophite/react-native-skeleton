@@ -1,4 +1,4 @@
-import {loginFlow, isLoginFlow} from './LoginSaga'
+import {loginFlow, isLoginFlow} from './loginSaga'
 import {fork} from 'redux-saga/effects';
 
 // start the daemons
