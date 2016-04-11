@@ -1,10 +1,11 @@
 import {take, put, fork, call, race} from 'redux-saga/effects';
-import authService from '../helpers/AuthService';
+import authService from '../helpers/authService';
 import {AsyncStorage} from 'react-native';
 import * as typesLogin from '../actions/loginAction'
 
 const AUTH_KEY = 'auth';
 const USER_KEY = 'user';
+
 
 // login
 const authSave = ({ authKey, userKey }) => {

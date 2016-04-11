@@ -1,8 +1,8 @@
 /*eslint-disable prefer-const */
 
 import React from "react-native";
-import SearchResults from './SearchResults';
-import authService from '../helpers/AuthService';
+import SearchResults from './searchResults';
+import authService from '../helpers/authService';
 
 let {
 	Text,

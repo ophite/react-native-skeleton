@@ -3,7 +3,7 @@
 import React from 'react-native';
 import ProgressBar from 'ProgressBarAndroid';
 import moment from 'moment';
-import authService from '../helpers/AuthService';
+import authService from '../helpers/authService';
 import PushPayload from './pushPayload';
 
 let {
