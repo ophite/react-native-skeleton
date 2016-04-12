@@ -11,6 +11,7 @@ import NavigationBar from "./../components/navigation-bar";
 
 import * as loginActions from '../actions/loginAction';
 import {isLoginRequireSelector} from '../selectors/loginSelector';
+import newId from '../helpers/newid';
 
 let {
 	Navigator,
@@ -29,12 +30,17 @@ let styles = StyleSheet.create({
 
 class Scene extends Component {
 
+	static localState = {
+		requestId: null
+	};
+
 	componentDidMount() {
-		this.props.loginActions.loginIsLoggedRequest();
+		Scene.localState.requestId = newId();
+		this.props.loginActions.loginIsLoggedRequest(Scene.localState.requestId);
 	}
 
 	render() {
-		if (this.props.showProgress) {
+		if (this.props.isLoading) {
 			return (<ProgressBar/>);
 		}
 
@@ -52,7 +58,7 @@ class Scene extends Component {
 				return {
 					component: App,
 					title: 'Feed',
-					passProps: { user: this.props.user, header: this.props.header }
+					passProps: { user: this.props.data.user, header: this.props.data.header }
 				};
 			case false:
 				return {
@@ -89,10 +95,25 @@ class Scene extends Component {
 	}
 }
 
+
+const mapStateToProps = (state, props) => {
+	const selector = isLoginRequireSelector(state, props);
+	const requestId = Scene.localState.requestId;
+	let requestInfo = selector.requests[ requestId ];
+	if (requestInfo) {
+		return {
+			...requestInfo,
+			isLoggedIn: requestInfo.data && !requestInfo.hasError && !requestInfo.isLoading && requestInfo.isLoaded
+		}
+	}
+
+	return {};
+};
+
 const mapDispatchToProps = (dispatch) => {
 	return {
 		loginActions: bindActionCreators(loginActions, dispatch)
 	}
 };
 
-export default connect(isLoginRequireSelector, mapDispatchToProps)(Scene);
+export default connect(mapStateToProps, mapDispatchToProps)(Scene);

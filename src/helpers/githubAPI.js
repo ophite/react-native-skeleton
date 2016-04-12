@@ -2,17 +2,13 @@ import buffer from 'buffer';
 
 class AuthService {
 
-	getFeedData({user, header}) {
-		debugger;
+	getFeedData({ user, header }) {
 		let url = 'https://api.github.com/users/' + user.login + '/received_events';
 
 		return fetch(url, {
 			headers: header
 		})
-			.then(response => {
-				debugger;
-				return response.json()
-			})
+			.then(response => response.json())
 			.catch(err => {
 				throw err;
 			});

@@ -8,8 +8,7 @@ const rootReducer = combineReducers({
 	login,
 	isLogin,
 	feed,
-	search,
-	request
+	search
 });
 
 export default rootReducer;

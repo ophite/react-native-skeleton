@@ -4,13 +4,9 @@ import React from "react-native";
 import {connect} from "../../node_modules/react-redux";
 import {bindActionCreators} from 'redux';
 import ProgressBar from '../components/progress';
-import * as actions from '../actions/loginAction';
-import * as requestActions from '../actions/requestAction';
+import * as loginActions from '../actions/loginAction';
 import {loginRequireSelector} from '../selectors/loginSelector';
-import {requestRequireSelector} from '../selectors/loginSelector';
-
 import newId from '../helpers/newid';
-import {DEFAULT_REQUEST_STATE} from '../reducers/requestReducer'
 
 let {
 	Text,
@@ -154,8 +150,9 @@ class Login extends Component {
 
 	onLoginPressed() {
 		Login.localState.requestId = newId();
-		this.props.requestActions.requestStarted(
-			Login.localState.requestId, {
+		this.props.loginActions.loginRequest(
+			Login.localState.requestId,
+			{
 				username: Login.localState.username,
 				password: Login.localState.password
 			});
@@ -168,7 +165,7 @@ Login.propTypes = {
 
 
 const mapStateToProps = (state, props) => {
-	const selector = requestRequireSelector(state, props);
+	const selector = loginRequireSelector(state, props);
 	const requestId = Login.localState.requestId;
 	let requestInfo = selector.requests[ requestId ];
 	if (requestInfo) {
@@ -183,11 +180,9 @@ const mapStateToProps = (state, props) => {
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		loginActions: bindActionCreators(actions, dispatch),
-		requestActions: bindActionCreators(requestActions, dispatch)
+		loginActions: bindActionCreators(loginActions, dispatch)
 	}
 };
 
 
-// export default connect(loginRequireSelector, mapDispatchToProps)(Login);
 export default connect(mapStateToProps, mapDispatchToProps)(Login);
