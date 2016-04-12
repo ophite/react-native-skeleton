@@ -16,3 +16,12 @@ export const isLoginRequireSelector = createSelector(
 		...isLogin
 	})
 );
+
+
+const requestSelector = (state) => state.request;
+export const requestRequireSelector = createSelector(
+	requestSelector,
+	(request) => ({
+		requests: request.requests
+	})
+);

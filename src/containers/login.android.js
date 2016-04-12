@@ -5,7 +5,12 @@ import {connect} from "../../node_modules/react-redux";
 import {bindActionCreators} from 'redux';
 import ProgressBar from '../components/progress';
 import * as actions from '../actions/loginAction';
+import * as requestActions from '../actions/requestAction';
 import {loginRequireSelector} from '../selectors/loginSelector';
+import {requestRequireSelector} from '../selectors/loginSelector';
+
+import newId from '../helpers/newid';
+import {DEFAULT_REQUEST_STATE} from '../reducers/requestReducer'
 
 let {
 	Text,
@@ -64,7 +69,7 @@ let styles = StyleSheet.create({
 class Login extends Component {
 
 	static localState = {
-		checkingAuth: false
+		requestId: null
 	};
 
 	constructor(props) {
@@ -76,11 +81,15 @@ class Login extends Component {
 	}
 
 	componentWillReceiveProps(nextProps) {
+		debugger;
 		// login
 		if (!this.props.isLoggedIn && nextProps.isLoggedIn) {
 			nextProps.navigator.push({
 				component: nextProps.nextScreen,
-				passProps: { user: nextProps.user, header: nextProps.header }
+				passProps: {
+					user: nextProps.data.user,
+					header: nextProps.data.header
+				}
 			});
 			return;
 		}
@@ -93,10 +102,6 @@ class Login extends Component {
 	}
 
 	render() {
-		if (Login.localState.checkingAuth) {
-			return (<ProgressBar style={styles.progress}/>);
-		}
-
 		var errorView = <View/>;
 		if (this.props.error && this.props.error.badCredentials) {
 			errorView = (
@@ -132,9 +137,9 @@ class Login extends Component {
 														onPress={this.onLoginPressed.bind(this)}>
 					<Text style={styles.buttonText}> Log in </Text>
 				</TouchableHighlight>
-				
+
 				{errorView}
-				{this.props.showProgress ? (<ProgressBar/>) : (<View></View>)}
+				{this.props.isLoading ? (<ProgressBar/>) : (<View></View>)}
 			</View>
 		);
 	}
@@ -148,7 +153,12 @@ class Login extends Component {
 	}
 
 	onLoginPressed() {
-		this.props.loginActions.loginRequest(Login.localState);
+		Login.localState.requestId = newId();
+		this.props.requestActions.requestStarted(
+			Login.localState.requestId, {
+				username: Login.localState.username,
+				password: Login.localState.password
+			});
 	}
 }
 
@@ -156,10 +166,28 @@ Login.propTypes = {
 	nextScreen: React.PropTypes.func
 };
 
+
+const mapStateToProps = (state, props) => {
+	const selector = requestRequireSelector(state, props);
+	const requestId = Login.localState.requestId;
+	let requestInfo = selector.requests[ requestId ];
+	if (requestInfo) {
+		return {
+			...requestInfo,
+			isLoggedIn: requestInfo.data && !requestInfo.hasError && !requestInfo.isLoading && requestInfo.isLoaded
+		}
+	}
+
+	return {};
+};
+
 const mapDispatchToProps = (dispatch) => {
 	return {
-		loginActions: bindActionCreators(actions, dispatch)
+		loginActions: bindActionCreators(actions, dispatch),
+		requestActions: bindActionCreators(requestActions, dispatch)
 	}
 };
 
-export default connect(loginRequireSelector, mapDispatchToProps)(Login);
+
+// export default connect(loginRequireSelector, mapDispatchToProps)(Login);
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
