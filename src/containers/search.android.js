@@ -9,6 +9,7 @@ import SearchResults from '../components/searchResults';
 
 import * as searchActions from '../actions/searchAction';
 import {searchRequireSelector} from '../selectors/searchSelector';
+import newId from '../helpers/newid';
 
 
 let {
@@ -59,16 +60,17 @@ class Search extends Component {
 		searchQuery: false,
 		dataSource: new ListView.DataSource({
 			rowHasChanged: (r1, r2) => r1 != r2
-		})
+		}),
+		requestId: null
 	};
 
 	componentWillReceiveProps(nextProps) {
-		if (!this.props.searchSelector.items && nextProps.searchSelector.items) {
+		if (!this.props.data.items && nextProps.data.items) {
 			this.props.navigator.push({
 				component: SearchResults,
 				title: 'Results',
 				passProps: {
-					dataSource: nextProps.dataSource
+					dataSource: Search.localState.dataSource.cloneWithRows(nextProps.data.items)
 				}
 			});
 		}
@@ -88,7 +90,7 @@ class Search extends Component {
 					<Text style={styles.buttonText}> Search </Text>
 				</TouchableHighlight>
 
-				{this.props.searchSelector.showProgress ? (<ProgressBar/>) : (<View></View>)}
+				{this.props.isLoading ? (<ProgressBar/>) : (<View></View>)}
 
 			</View>
 		);
@@ -99,16 +101,32 @@ class Search extends Component {
 	}
 
 	onSearchPressed() {
-		this.props.searchActions.searchRequest(Search.localState.searchQuery);
+		Search.localState.requestId = newId();
+		this.props.searchActions.searchRequest(Search.localState.requestId, Search.localState.searchQuery);
 	}
 }
 
-const mapStateToProps = (state) => {
-	let items = state.search.items ? state.search.items : [];
-	return {
-		searchSelector: searchRequireSelector(state),
-		dataSource: Search.localState.dataSource.cloneWithRows(items)
+
+const mapStateToProps = (state, props) => {
+	const selector = searchRequireSelector(state, props);
+	const requestId = Search.localState.requestId;
+	let requestInfo = selector.requests[ requestId ];
+	if (requestInfo) {
+		let data = requestInfo.data || {};
+
+		return {
+			...requestInfo,
+			data: {
+				items: data.items || null
+			}
+		};
 	}
+
+	return {
+		data: {
+			items: null
+		}
+	};
 };
 
 const mapDispatchToProps = (dispatch) => {

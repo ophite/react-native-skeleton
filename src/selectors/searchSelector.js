@@ -4,7 +4,6 @@ const searchSelector = (state) => state.search;
 export const searchRequireSelector = createSelector(
 	searchSelector,
 	(search) => ({
-		...search
+		requests: search.requests
 	})
 );
-

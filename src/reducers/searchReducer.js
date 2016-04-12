@@ -1,28 +1,10 @@
-import * as typesSearch from '../actions/searchAction';
+import * as types from '../actions/searchAction';
+import * as requestReducer from './requestReducer';
+import {handleActions} from 'redux-actions'
 
-export const search = (state = {}, action) => {
-	if (!action) return state;
 
-	switch (action.type) {
-		case typesSearch.SEARCH_REQUEST:
-			return {
-				items: null,
-				repositories: null,
-				showProgress: true
-			};
-		case typesSearch.SEARCH_SUCCESS:
-			return {
-				repositories: action.data.repositories,
-				items: action.data.items,
-				showProgress: false
-			};
-		case typesSearch.SEARCH_ERROR:
-			return {
-				error: action.error,
-				showProgress: false
-			};
-		default:
-			return state;
-	}
-};
-
+let searchReducer = {};
+searchReducer[ types.SEARCH_REQUEST ] = requestReducer.requestStarted;
+searchReducer[ types.SEARCH_SUCCESS ] = requestReducer.requestSuccess;
+searchReducer[ types.SEARCH_ERROR ] = requestReducer.requestError;
+export const search = handleActions(searchReducer, requestReducer.DEFAULT_STATE);

@@ -3,17 +3,19 @@ import githubAPI from '../helpers/githubAPI';
 import * as typesSearch from '../actions/searchAction';
 
 
-function* getSearchData(searchQuery) {
-	try {
-		let data = yield call(githubAPI.getSearchData, searchQuery);
-		yield put({ type: typesSearch.SEARCH_SUCCESS, data })
-	} catch (error) {
-		yield put({ type: typesSearch.SEARCH_ERROR, error })
+export function* searchFlow() {
+	while(true) {
+		const data = yield take(typesSearch.SEARCH_REQUEST);
+		yield fork(getSearchData, data.payload);
+		yield take([ typesSearch.SEARCH_SUCCESS, typesSearch.SEARCH_ERROR ]);
 	}
 }
 
-export function* searchFlow() {
-	const searchQuery = yield take(typesSearch.SEARCH_REQUEST);
-	yield fork(getSearchData, searchQuery);
-	yield take([ typesSearch.SEARCH_SUCCESS, typesSearch.SEARCH_ERROR ]);
+function* getSearchData({ requestId, data }) {
+	try {
+		let searchResult = yield call(githubAPI.getSearchData, data);
+		yield put({ type: typesSearch.SEARCH_SUCCESS, payload: { requestId, data: searchResult } })
+	} catch (error) {
+		yield put({ type: typesSearch.SEARCH_ERROR, payload: { requestId, error } })
+	}
 }

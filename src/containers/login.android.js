@@ -68,16 +68,7 @@ class Login extends Component {
 		requestId: null
 	};
 
-	constructor(props) {
-		super(props);
-		this.state = {
-			showProgress: false,
-			isLoggedIn: false
-		};
-	}
-
 	componentWillReceiveProps(nextProps) {
-		debugger;
 		// login
 		if (!this.props.isLoggedIn && nextProps.isLoggedIn) {
 			nextProps.navigator.push({

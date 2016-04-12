@@ -6,7 +6,6 @@ export const DEFAULT_STATE = {
 export const requestStarted = (state, action) => {
 	const { requestId } = action.payload;
 	return {
-		...state,
 		requests: {
 			[requestId]: {
 				hasError: false,
@@ -21,7 +20,6 @@ export const requestStarted = (state, action) => {
 export const requestSuccess = (state, action) => {
 	const { requestId, data } = action.payload;
 	return {
-		...state,
 		requests: {
 			[requestId]: {
 				data: data,
@@ -37,7 +35,6 @@ export const requestSuccess = (state, action) => {
 export const requestError = (state, action) => {
 	const { requestId, error } = action.payload;
 	return {
-		...state,
 		requests: {
 			[requestId]: {
 				hasError: true,

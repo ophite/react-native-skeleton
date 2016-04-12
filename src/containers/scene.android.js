@@ -53,7 +53,7 @@ class Scene extends Component {
 	}
 
 	getFirstComponentInfo() {
-		switch (this.props.isLoggedIn) {
+		switch (!this.props.isLoggedIn) {
 			case true:
 				return {
 					component: App,
@@ -107,7 +107,9 @@ const mapStateToProps = (state, props) => {
 		}
 	}
 
-	return {};
+	return {
+		data: {}
+	};
 };
 
 const mapDispatchToProps = (dispatch) => {
