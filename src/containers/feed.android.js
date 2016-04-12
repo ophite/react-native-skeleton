@@ -139,7 +139,7 @@ Feed.propTypes = {
 
 const mapStateToProps = (state, props) => {
 	const selector = requestSelector('feed', state, props)(Feed.localState.requestId);
-	let data = selector.data || [];
+	let data = Array.isArray(selector.data) ? selector.data : [];
 	let feedItems = data.filter((ev)=> ev.type === 'PushEvent');
 
 	return {

@@ -22,11 +22,11 @@ export const requestSuccess = (state, action) => {
 	return {
 		requests: {
 			[requestId]: {
-				data: data,
 				hasError: false,
 				isLoaded: true,
 				isLoading: false,
-				errors: null
+				errors: null,
+				data: data
 			}
 		}
 	}

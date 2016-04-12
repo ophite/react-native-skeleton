@@ -1,10 +1,10 @@
 import * as types from '../actions/feedAction';
-import * as requestReducer from './requestReducer';
+import {requestStarted, requestSuccess, requestError, DEFAULT_STATE} from './requestReducer';
 import {handleActions} from 'redux-actions';
 
 
 let feedReducer = {};
-feedReducer[ types.FEED_REQUEST ] = requestReducer.requestStarted;
-feedReducer[ types.FEED_SUCCESS ] = requestReducer.requestSuccess;
-feedReducer[ types.FEED_ERROR ] = requestReducer.requestError;
-export const feed = handleActions(feedReducer, requestReducer.DEFAULT_STATE);
+feedReducer[ types.FEED_REQUEST ] = requestStarted;
+feedReducer[ types.FEED_SUCCESS ] = requestSuccess;
+feedReducer[ types.FEED_ERROR ] = requestError;
+export const feed = handleActions(feedReducer, DEFAULT_STATE);
