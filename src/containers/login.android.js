@@ -5,7 +5,7 @@ import {connect} from "../../node_modules/react-redux";
 import {bindActionCreators} from 'redux';
 import ProgressBar from '../components/progress';
 import * as loginActions from '../actions/loginAction';
-import {loginRequireSelector} from '../selectors/loginSelector';
+import requestSelector from '../selectors/requestSelector';
 import newId from '../helpers/newid';
 
 let {
@@ -156,17 +156,11 @@ Login.propTypes = {
 
 
 const mapStateToProps = (state, props) => {
-	const selector = loginRequireSelector(state, props);
-	const requestId = Login.localState.requestId;
-	let requestInfo = selector.requests[ requestId ];
-	if (requestInfo) {
-		return {
-			...requestInfo,
-			isLoggedIn: requestInfo.data && !requestInfo.hasError && !requestInfo.isLoading && requestInfo.isLoaded
-		}
+	const selector = requestSelector('login', state, props)(Login.localState.requestId);
+	return {
+		...selector,
+		isLoggedIn: selector.data && !selector.hasError && !selector.isLoading && selector.isLoaded
 	}
-
-	return {};
 };
 
 const mapDispatchToProps = (dispatch) => {

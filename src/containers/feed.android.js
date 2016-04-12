@@ -8,7 +8,7 @@ import ProgressBar from '../components/progress';
 import moment from 'moment';
 
 import PushPayload from '../components/pushPayload';
-import {feedRequireSelector} from '../selectors/feedSelector';
+import requestSelector from '../selectors/requestSelector';
 import * as feedActions from '../actions/feedAction';
 import newId from '../helpers/newid';
 
@@ -138,23 +138,14 @@ Feed.propTypes = {
 
 
 const mapStateToProps = (state, props) => {
-	const selector = feedRequireSelector(state, props);
-	const requestId = Feed.localState.requestId;
-	let requestInfo = selector.requests[ requestId ];
-
-	if (requestInfo) {
-		let data = requestInfo.data || [];
-		let feedItems = data.filter((ev)=> ev.type === 'PushEvent');
-		return {
-			...requestInfo,
-			dataSource: Feed.localState.dataSource.cloneWithRows(feedItems || [])
-		}
-	}
+	const selector = requestSelector('feed', state, props)(Feed.localState.requestId);
+	let data = selector.data || [];
+	let feedItems = data.filter((ev)=> ev.type === 'PushEvent');
 
 	return {
-		dataSource: Feed.localState.dataSource,
-		data: {}
-	};
+		...selector,
+		dataSource: Feed.localState.dataSource.cloneWithRows(feedItems || [])
+	}
 };
 
 const mapDispatchToProps = (dispatch) => {

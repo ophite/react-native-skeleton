@@ -8,7 +8,7 @@ import ProgressBar from '../components/progress';
 import SearchResults from '../components/searchResults';
 
 import * as searchActions from '../actions/searchAction';
-import {searchRequireSelector} from '../selectors/searchSelector';
+import requestSelector from '../selectors/requestSelector';
 import newId from '../helpers/newid';
 
 
@@ -89,7 +89,7 @@ class Search extends Component {
 														onPress={this.onSearchPressed.bind(this)}>
 					<Text style={styles.buttonText}> Search </Text>
 				</TouchableHighlight>
-
+				
 				{this.props.isLoading ? (<ProgressBar/>) : (<View></View>)}
 
 			</View>
@@ -108,23 +108,13 @@ class Search extends Component {
 
 
 const mapStateToProps = (state, props) => {
-	const selector = searchRequireSelector(state, props);
-	const requestId = Search.localState.requestId;
-	let requestInfo = selector.requests[ requestId ];
-	if (requestInfo) {
-		let data = requestInfo.data || {};
-
-		return {
-			...requestInfo,
-			data: {
-				items: data.items || null
-			}
-		};
-	}
+	const selector = requestSelector('search', state, props)(Search.localState.requestId);
+	let data = selector.data || {};
 
 	return {
+		...selector,
 		data: {
-			items: null
+			items: data.items || null
 		}
 	};
 };

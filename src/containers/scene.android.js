@@ -10,7 +10,7 @@ import Login from "./login";
 import NavigationBar from "./../components/navigation-bar";
 
 import * as loginActions from '../actions/loginAction';
-import {isLoginRequireSelector} from '../selectors/loginSelector';
+import requestSelector from '../selectors/requestSelector';
 import newId from '../helpers/newid';
 
 let {
@@ -97,19 +97,11 @@ class Scene extends Component {
 
 
 const mapStateToProps = (state, props) => {
-	const selector = isLoginRequireSelector(state, props);
-	const requestId = Scene.localState.requestId;
-	let requestInfo = selector.requests[ requestId ];
-	if (requestInfo) {
-		return {
-			...requestInfo,
-			isLoggedIn: requestInfo.data && !requestInfo.hasError && !requestInfo.isLoading && requestInfo.isLoaded
-		}
-	}
-
+	const selector = requestSelector('isLogin', state, props)(Scene.localState.requestId);
 	return {
-		data: {}
-	};
+		...selector,
+		isLoggedIn: selector.data && !selector.hasError && !selector.isLoading && selector.isLoaded
+	}
 };
 
 const mapDispatchToProps = (dispatch) => {
