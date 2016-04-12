@@ -10,7 +10,7 @@ import moment from 'moment';
 import PushPayload from '../components/pushPayload';
 import {feedRequireSelector} from '../selectors/feedSelector';
 import * as feedActions from '../actions/feedAction';
-
+import newId from '../helpers/newid';
 
 let {
 	StyleSheet,
@@ -63,16 +63,20 @@ let styles = StyleSheet.create({
 
 class Feed extends Component {
 
-	static dataSource = new ListView.DataSource({
-		rowHasChanged: (r1, r2) => r1 != r2
-	});
+	static localState = {
+		requestId: null,
+		dataSource: new ListView.DataSource({
+			rowHasChanged: (r1, r2) => r1 != r2
+		})
+	};
 
 	componentDidMount() {
-		this.props.feedActions.feedRequest(this.props.user, this.props.header);
+		Feed.localState.requestId = newId();
+		this.props.feedActions.feedRequest(Feed.localState.requestId, { user: this.props.user, header: this.props.header });
 	}
 
 	render() {
-		if (this.props.feedSelector.showProgress) {
+		if (this.props.isLoading) {
 			return (
 				<View style={styles.containerProgress}>
 					<ProgressBar/>
@@ -129,15 +133,28 @@ class Feed extends Component {
 }
 
 Feed.propTypes = {
-	navigator: React.PropTypes.object,
+	navigator: React.PropTypes.object
 };
 
-const mapStateToProps = (state) => {
-	let feedItems = state.feed.feedItems ? state.feed.feedItems : [];
-	return {
-		feedSelector: feedRequireSelector(state),
-		dataSource: Feed.dataSource.cloneWithRows(feedItems)
+
+const mapStateToProps = (state, props) => {
+	const selector = feedRequireSelector(state, props);
+	const requestId = Feed.localState.requestId;
+	let requestInfo = selector.requests[ requestId ];
+
+	if (requestInfo) {
+		let data = requestInfo.data || [];
+		let feedItems = data.filter((ev)=> ev.type === 'PushEvent');
+		return {
+			...requestInfo,
+			dataSource: Feed.localState.dataSource.cloneWithRows(feedItems || [])
+		}
 	}
+
+	return {
+		dataSource: Feed.localState.dataSource,
+		data: {}
+	};
 };
 
 const mapDispatchToProps = (dispatch) => {

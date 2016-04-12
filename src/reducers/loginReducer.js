@@ -1,6 +1,6 @@
 import * as types from '../actions/loginAction';
 import * as requestReducer from './requestReducer';
-import {handleActions} from 'redux-actions'
+import {handleActions} from 'redux-actions';
 
 
 let loginReducer = {};

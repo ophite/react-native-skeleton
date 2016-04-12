@@ -1,26 +1,10 @@
-import * as typesFeed from '../actions/feedAction';
+import * as types from '../actions/feedAction';
+import * as requestReducer from './requestReducer';
+import {handleActions} from 'redux-actions';
 
-export const feed = (state = {}, action) => {
-	if (!action) return state;
 
-	switch (action.type) {
-		case typesFeed.FEED_REQUEST:
-			return {
-				showProgress: true
-			};
-		case typesFeed.FEED_SUCCESS:
-			let feedItems = action.data.filter((ev)=> ev.type === 'PushEvent');
-			return {
-				feedItems,
-				showProgress: false
-			};
-		case typesFeed.FEED_ERROR:
-			return {
-				error: action.error,
-				showProgress: false
-			};
-		default:
-			return state;
-	}
-};
-
+let feedReducer = {};
+feedReducer[ types.FEED_REQUEST ] = requestReducer.requestStarted;
+feedReducer[ types.FEED_SUCCESS ] = requestReducer.requestSuccess;
+feedReducer[ types.FEED_ERROR ] = requestReducer.requestError;
+export const feed = handleActions(feedReducer, requestReducer.DEFAULT_STATE);

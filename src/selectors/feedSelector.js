@@ -4,7 +4,6 @@ const feedSelector = (state) => state.feed;
 export const feedRequireSelector = createSelector(
 	feedSelector,
 	(feed) => ({
-		...feed
+		requests: feed.requests
 	})
 );
-
