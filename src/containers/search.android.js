@@ -8,7 +8,7 @@ import ProgressBar from '../components/progress';
 import SearchResults from '../components/searchResults';
 
 import * as searchActions from '../actions/searchAction';
-import requestSelector from '../selectors/requestSelector';
+import {requestSelector} from 'redux-reqhelper';
 import newId from '../helpers/newid';
 
 
@@ -89,7 +89,7 @@ class Search extends Component {
 														onPress={this.onSearchPressed.bind(this)}>
 					<Text style={styles.buttonText}> Search </Text>
 				</TouchableHighlight>
-				
+
 				{this.props.isLoading ? (<ProgressBar/>) : (<View></View>)}
 
 			</View>

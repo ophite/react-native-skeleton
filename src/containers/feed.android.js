@@ -8,7 +8,7 @@ import ProgressBar from '../components/progress';
 import moment from 'moment';
 
 import PushPayload from '../components/pushPayload';
-import requestSelector from '../selectors/requestSelector';
+import {requestSelector} from 'redux-reqhelper';
 import * as feedActions from '../actions/feedAction';
 import newId from '../helpers/newid';
 

@@ -5,7 +5,7 @@ import {connect} from "../../node_modules/react-redux";
 import {bindActionCreators} from 'redux';
 import ProgressBar from '../components/progress';
 import * as loginActions from '../actions/loginAction';
-import requestSelector from '../selectors/requestSelector';
+import {requestSelector} from 'redux-reqhelper';
 import newId from '../helpers/newid';
 
 let {
@@ -73,17 +73,12 @@ class Login extends Component {
 		if (!this.props.isLoggedIn && nextProps.isLoggedIn) {
 			nextProps.navigator.push({
 				component: nextProps.nextScreen,
+				title: nextProps.nextScreenTitle,
 				passProps: {
 					user: nextProps.data.user,
 					header: nextProps.data.header
 				}
 			});
-			return;
-		}
-
-		// When on next screen click left button then before you login again you need to logout for login flow in saga
-		if (this.props.isLoggedIn && !nextProps.isLoggedIn) {
-			nextProps.loginActions.logout();
 			return;
 		}
 	}
@@ -151,7 +146,8 @@ class Login extends Component {
 }
 
 Login.propTypes = {
-	nextScreen: React.PropTypes.func
+	nextScreen: React.PropTypes.func,
+	nextScreenTitle: React.PropTypes.string
 };
 
 

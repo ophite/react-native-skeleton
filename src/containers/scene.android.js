@@ -10,7 +10,7 @@ import Login from "./login";
 import NavigationBar from "./../components/navigation-bar";
 
 import * as loginActions from '../actions/loginAction';
-import requestSelector from '../selectors/requestSelector';
+import {requestSelector} from 'redux-reqhelper';
 import newId from '../helpers/newid';
 
 let {
@@ -48,7 +48,8 @@ class Scene extends Component {
 		return (
 			<Navigator style={styles.container}
 								 renderScene={this.renderScene}
-								 initialRoute={{...componentInfo}}/>
+								 initialRoute={{...componentInfo}}
+								 passProps={{...this.props}}/>
 		);
 	}
 
@@ -64,23 +65,45 @@ class Scene extends Component {
 				return {
 					component: Login,
 					title: 'Login',
-					passProps: { nextScreen: App }
+					passProps: {
+						nextScreenTitle: 'Feed',
+						nextScreen: App
+					}
 				};
 			default:
 				return {
 					component: Login,
 					title: 'Login',
-					passProps: { nextScreen: App }
+					passProps: {
+						nextScreenTitle: 'Feed',
+						nextScreen: App }
 				};
 		}
 	}
 
 	renderScene(route:Object, navigator:Object) {
-		const Component = route.component;
+		const onPrev = (navigator, route) => {
+			navigator.pop();
+			switch (route.component) {
+				case App:
+					this.passProps.loginActions.logout(Scene.localState.requestId);
+					break;
+				default:
+					break;
+			}
+		};
 
+		const hidePrev = (navigator, route) => {
+			const routes = navigator.getCurrentRoutes();
+			return routes.length === 1;
+		};
+
+		const Component = route.component;
 		return (
 			<View style={styles.container}>
 				<NavigationBar
+					onPrev={onPrev.bind(this)}
+					hidePrev={hidePrev(navigator, route)}
 					backgroundStyle={{backgroundColor: "#eee"}}
 					navigator={navigator}
 					route={route}
