@@ -62,7 +62,8 @@ class PushPayload extends Component {
 		let ds = new ListView.DataSource({
 			rowHasChanged: (r1, r2) => r1 != r2
 		});
-		this.dataSource = ds.cloneWithRows(props.pushEvent.payload.commits);
+		debugger;
+		this.dataSource = ds.cloneWithRows(props.pushEvent.payload.commits || []);
 	}
 
 	render() {
@@ -70,7 +71,7 @@ class PushPayload extends Component {
 			<View style={styles.container}>
 
 				<Image style={styles.image}
-							 source={{uri: this.props.pushEvent.actor.avatar_url}}/>
+					   source={{uri: this.props.pushEvent.actor.avatar_url}}/>
 
 				<Text style={styles.textCreatedAt}>
 					{moment(this.props.pushEvent.created_at).fromNow()}
@@ -80,19 +81,23 @@ class PushPayload extends Component {
 					<Text style={styles.bold}>{this.props.pushEvent.actor.login}</Text>
 				</Text>
 
-				<Text>{this.props.pushEvent.payload.ref.replace('refs/heads/', '')}</Text>
+				{
+					this.props.pushEvent.payload.ref ?
+						(<Text>{this.props.pushEvent.payload.ref.replace('refs/heads/', '')}</Text>):
+						(<View></View>)
+				}
 
 				<Text style={styles.textRepoName}>
 					at <Text style={styles.bold}>{this.props.pushEvent.repo.name}</Text>
 				</Text>
 
-				<Text style={styles.textCommitsLength}>
-					{this.props.pushEvent.payload.commits.length} Commits
-				</Text>
-
-				<ListView
-					dataSource={this.dataSource}
-					renderRow={this.renderRow.bind(this)}/>
+				{
+					this.props.pushEvent.payload.commits ?
+						(<Text style={styles.textCommitsLength}>
+							{this.props.pushEvent.payload.commits.length} Commits
+						</Text>) + (<ListView dataSource={this.dataSource} renderRow={this.renderRow.bind(this)}/>):
+						(<View></View>)
+				}
 			</View>
 		);
 	}

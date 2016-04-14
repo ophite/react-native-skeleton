@@ -4,11 +4,12 @@ class AuthService {
 
 	getFeedData({ user, header }) {
 		let url = 'https://api.github.com/users/' + user.login + '/received_events';
-
 		return fetch(url, {
 			headers: header
 		})
-			.then(response => response.json())
+			.then(response => {
+				return response.json()
+			})
 			.catch(err => {
 				throw err;
 			});

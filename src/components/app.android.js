@@ -42,10 +42,8 @@ class App extends Component {
 				<TabNavigator.Item
 					selected={this.state.selectedTab === 'feed'}
 					title="Feed"
-					renderIcon={() => <Image style={styles.image}
-											 source={require('image!ic_feed')}/> }
-					renderSelectedIcon={() => <Image style={styles.image}
-													 source={require('image!ic_feed')}/>}
+					renderIcon={() => <Image style={styles.image} source={require('image!ic_feed')}/> }
+					renderSelectedIcon={() => <Image style={styles.image} source={require('image!ic_feed')}/>}
 					onPress={() => this.setState({ selectedTab: 'feed' })}>
 					<Feed {...this.props}/>
 				</TabNavigator.Item>
@@ -53,10 +51,8 @@ class App extends Component {
 				<TabNavigator.Item
 					selected={this.state.selectedTab === 'search'}
 					title="Search"
-					renderIcon={() => <Image style={styles.image}
-											 source={require('image!ic_search')}/> }
-					renderSelectedIcon={() => <Image style={styles.image}
-													 source={require('image!ic_search')}/>}
+					renderIcon={() => <Image style={styles.image} source={require('image!ic_search')}/> }
+					renderSelectedIcon={() => <Image style={styles.image} source={require('image!ic_search')}/>}
 					onPress={() => this.setState({ selectedTab: 'search' })}>
 					<Search {...this.props}/>
 				</TabNavigator.Item>

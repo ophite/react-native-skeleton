@@ -72,7 +72,10 @@ class Feed extends Component {
 
 	componentDidMount() {
 		Feed.localState.requestId = newId();
-		this.props.feedActions.feedRequest(Feed.localState.requestId, { user: this.props.user, header: this.props.header });
+		this.props.feedActions.feedRequest(Feed.localState.requestId, {
+			user: this.props.user,
+			header: this.props.header
+		});
 	}
 
 	render() {
@@ -101,7 +104,7 @@ class Feed extends Component {
 
 				<View style={styles.row}>
 					<Image style={styles.image}
-								 source={{uri: rowData.actor.avatar_url}}/>
+						   source={{uri: rowData.actor.avatar_url}}/>
 					<View style={styles.textView}>
 						<Text style={styles.text}>
 							{moment(rowData.created_at).fromNow()}
@@ -109,9 +112,13 @@ class Feed extends Component {
 						<Text style={styles.text}>
 							{rowData.actor.login}
 						</Text>
-						<Text style={styles.text}>
-							{rowData.payload.ref.replace('refs/heads/', '')}
-						</Text>
+						{
+							rowData.payload.ref ?
+								(<Text style={styles.text}>
+									{rowData.payload.ref.replace('refs/heads/', '')}
+								</Text>) :
+								(<View></View>)
+						}
 						<Text style={styles.text}>
 							at <Text style={styles.textRepoName}>{rowData.repo.name}</Text>
 						</Text>
@@ -140,7 +147,8 @@ Feed.propTypes = {
 const mapStateToProps = (state, props) => {
 	const selector = requestSelector('feed', state, props)(Feed.localState.requestId);
 	let data = Array.isArray(selector.data) ? selector.data : [];
-	let feedItems = data.filter((ev)=> ev.type === 'PushEvent');
+	debugger;
+	let feedItems = data.filter((ev)=> ~[ 'PushEvent', 'WatchEvent' ].indexOf(ev.type));
 
 	return {
 		...selector,

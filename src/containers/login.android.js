@@ -116,7 +116,7 @@ class Login extends Component {
 									 secureTextEntry={true}>
 				</TextInput>
 				<TouchableHighlight style={styles.button}
-														onPress={this.onLoginPressed.bind(this)}>
+									onPress={this.onLoginPressed.bind(this)}>
 					<Text style={styles.buttonText}> Log in </Text>
 				</TouchableHighlight>
 
