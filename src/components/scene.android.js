@@ -3,14 +3,14 @@
 import React from "react-native";
 import {connect} from "../../node_modules/react-redux";
 import {bindActionCreators} from 'redux';
+import {requestSelector} from 'redux-reqhelper';
 
-import ProgressBar from '../components/progress';
-import App from "../components/app";
-import LoginContainer from "./login.container";
-import NavigationBar from "./../components/navigation-bar";
+import ProgressBar from './progress';
+import App from "./app";
+import LoginContainer from "../containers/login.container";
+import NavigationBar from "./navigation-bar";
 
 import * as loginActions from '../actions/loginAction';
-import {requestSelector} from 'redux-reqhelper';
 import newId from '../helpers/newid';
 
 let {
@@ -30,15 +30,6 @@ let styles = StyleSheet.create({
 
 class Scene extends Component {
 
-	static localState = {
-		requestId: null
-	};
-
-	componentDidMount() {
-		Scene.localState.requestId = newId();
-		this.props.loginActions.loginIsLoggedRequest(Scene.localState.requestId);
-	}
-
 	render() {
 		if (this.props.isLoading) {
 			return (<ProgressBar/>);
@@ -47,9 +38,8 @@ class Scene extends Component {
 		const componentInfo = this.getFirstComponentInfo();
 		return (
 			<Navigator style={styles.container}
-								 renderScene={this.renderScene}
-								 initialRoute={{...componentInfo}}
-								 passProps={{...this.props}}/>
+					   renderScene={this.renderScene.bind(this)}
+					   initialRoute={{...componentInfo}}/>
 		);
 	}
 
@@ -76,7 +66,8 @@ class Scene extends Component {
 					title: 'Login',
 					passProps: {
 						nextScreenTitle: 'Feed',
-						nextScreen: App }
+						nextScreen: App
+					}
 				};
 		}
 	}
@@ -86,7 +77,7 @@ class Scene extends Component {
 			navigator.pop();
 			switch (route.component) {
 				case App:
-					this.passProps.loginActions.logout(Scene.localState.requestId);
+					this.props.onLogout();
 					break;
 				default:
 					break;
@@ -118,19 +109,4 @@ class Scene extends Component {
 	}
 }
 
-
-const mapStateToProps = (state, props) => {
-	const selector = requestSelector('isLogin', state, props)(Scene.localState.requestId);
-	return {
-		...selector,
-		isLoggedIn: selector.data && !selector.hasError && !selector.isLoading && selector.isLoaded
-	}
-};
-
-const mapDispatchToProps = (dispatch) => {
-	return {
-		loginActions: bindActionCreators(loginActions, dispatch)
-	}
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Scene);
+export default Scene;
