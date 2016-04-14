@@ -6,6 +6,7 @@ import {bindActionCreators} from 'redux';
 import {requestSelector} from 'redux-reqhelper';
 
 import Search from '../components/search';
+import SearchResults from '../components/searchResults';
 import * as searchActions from '../actions/searchAction';
 import newId from '../helpers/newid';
 
@@ -14,7 +15,6 @@ let {
 	ListView,
 	Component
 } = React;
-
 
 
 class SearchContainer extends Component {
@@ -27,13 +27,26 @@ class SearchContainer extends Component {
 		requestId: null
 	};
 
+	componentWillReceiveProps(nextProps) {
+		if (!this.props.data.items && nextProps.data.items) {
+			this.props.navigator.push({
+				component: SearchResults,
+				title: 'Results',
+				passProps: {
+					dataSource: this.props.dataSource.cloneWithRows(nextProps.data.items)
+				}
+			});
+		}
+	}
+
 	render() {
-		debugger;
-		return (<Search
-			onSearchChange={this.onSearchChange}
-			onSearchPressed={this.onSearchPressed.bind(this)}
-			{...this.props}
-		/>);
+		return (
+			<Search
+				onSearchChange={this.onSearchChange}
+				onSearchPressed={this.onSearchPressed.bind(this)}
+				{...this.props}
+			/>
+		);
 	}
 
 	onSearchChange(text) {

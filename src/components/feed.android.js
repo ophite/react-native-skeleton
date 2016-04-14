@@ -3,8 +3,7 @@
 import React from 'react-native';
 import moment from 'moment';
 
-import ProgressBar from '../components/progress';
-import PushPayload from '../components/pushPayload';
+import ProgressBar from './progress';
 
 let {
 	StyleSheet,
@@ -108,19 +107,8 @@ class Feed extends Component {
 	}
 
 	pressRow(rowData) {
-		this.props.navigator.push({
-			title: 'Push Event',
-			component: PushPayload,
-			passProps: {
-				pushEvent: rowData
-			}
-		});
+		this.props.onShowResults(rowData);
 	}
 }
-
-Feed.propTypes = {
-	navigator: React.PropTypes.object
-};
-
 
 export default Feed;

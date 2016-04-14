@@ -6,7 +6,7 @@ import {bindActionCreators} from 'redux';
 
 import ProgressBar from '../components/progress';
 import App from "../components/app";
-import Login from "./login";
+import LoginContainer from "./login.container";
 import NavigationBar from "./../components/navigation-bar";
 
 import * as loginActions from '../actions/loginAction';
@@ -63,7 +63,7 @@ class Scene extends Component {
 				};
 			case false:
 				return {
-					component: Login,
+					component: LoginContainer,
 					title: 'Login',
 					passProps: {
 						nextScreenTitle: 'Feed',
@@ -72,7 +72,7 @@ class Scene extends Component {
 				};
 			default:
 				return {
-					component: Login,
+					component: LoginContainer,
 					title: 'Login',
 					passProps: {
 						nextScreenTitle: 'Feed',

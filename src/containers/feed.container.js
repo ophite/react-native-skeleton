@@ -6,6 +6,7 @@ import {bindActionCreators} from 'redux';
 import {requestSelector} from 'redux-reqhelper';
 
 import Feed from '../components/feed';
+import PushPayload from '../components/pushPayload';
 import * as feedActions from '../actions/feedAction';
 import newId from '../helpers/newid';
 
@@ -33,11 +34,28 @@ class FeedContainer extends Component {
 	}
 
 	render() {
-		return (<Feed {...this.props}/>);
+		return (
+			<Feed
+				onShowResults={this.onShowResults.bind(this)}
+				{...this.props}
+			/>);
 	}
 
+	onShowResults(rowData) {
+		this.props.navigator.push({
+			title: 'Push Event',
+			component: PushPayload,
+			passProps: {
+				pushEvent: rowData
+			}
+		});
+	}
 }
 
+
+FeedContainer.propTypes = {
+	navigator: React.PropTypes.object
+};
 
 const mapStateToProps = (state, props) => {
 	const selector = requestSelector('feed', state, props)(FeedContainer.localState.requestId);

@@ -2,8 +2,7 @@
 
 import React from "react-native";
 
-import ProgressBar from '../components/progress';
-import SearchResults from '../components/searchResults';
+import ProgressBar from './progress';
 
 let {
 	Text,
@@ -47,17 +46,6 @@ let styles = StyleSheet.create({
 
 
 class Search extends Component {
-	componentWillReceiveProps(nextProps) {
-		if (!this.props.data.items && nextProps.data.items) {
-			this.props.navigator.push({
-				component: SearchResults,
-				title: 'Results',
-				passProps: {
-					dataSource: this.props.dataSource.cloneWithRows(nextProps.data.items)
-				}
-			});
-		}
-	}
 
 	render() {
 		return (
