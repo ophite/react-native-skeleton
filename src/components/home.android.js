@@ -27,7 +27,7 @@ let styles = StyleSheet.create({
 });
 
 
-class App extends Component {
+class Home extends Component {
 	constructor(props, context) {
 		super(props, context);
 		this.state = {
@@ -62,4 +62,4 @@ class App extends Component {
 	}
 }
 
-export default App;
+export default Home;

@@ -4,12 +4,8 @@ class AuthService {
 
 	getFeedData({ user, header }) {
 		let url = 'https://api.github.com/users/' + user.login + '/received_events';
-		return fetch(url, {
-			headers: header
-		})
-			.then(response => {
-				return response.json()
-			})
+		return fetch(url, { headers: header })
+			.then(response => response.json())
 			.catch(err => {
 				throw err;
 			});
@@ -30,9 +26,7 @@ class AuthService {
 		let encodedAuth = b.toString('base64');
 
 		return fetch('https://api.github.com/user', {
-			headers: {
-				'Authorization': 'Basic ' + encodedAuth
-			}
+			headers: { 'Authorization': 'Basic ' + encodedAuth }
 		})
 			.then((response) => {
 				if (response.status >= 200 && response.status < 300) {

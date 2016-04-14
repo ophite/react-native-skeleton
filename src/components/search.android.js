@@ -1,7 +1,6 @@
 /*eslint-disable prefer-const */
 
 import React from "react-native";
-
 import ProgressBar from './progress';
 
 let {

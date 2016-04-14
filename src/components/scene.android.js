@@ -1,17 +1,12 @@
 /*eslint-disable prefer-const */
 
 import React from "react-native";
-import {connect} from "../../node_modules/react-redux";
-import {bindActionCreators} from 'redux';
-import {requestSelector} from 'redux-reqhelper';
 
-import ProgressBar from './progress';
-import App from "./app";
-import LoginContainer from "../containers/login.container";
 import NavigationBar from "./navigation-bar";
+import ProgressBar from './progress';
+import Home from "./home";
+import LoginContainer from "../containers/login.container";
 
-import * as loginActions from '../actions/loginAction';
-import newId from '../helpers/newid';
 
 let {
 	Navigator,
@@ -47,7 +42,7 @@ class Scene extends Component {
 		switch (this.props.isLoggedIn) {
 			case true:
 				return {
-					component: App,
+					component: Home,
 					title: 'Feed',
 					passProps: { user: this.props.data.user, header: this.props.data.header }
 				};
@@ -57,7 +52,7 @@ class Scene extends Component {
 					title: 'Login',
 					passProps: {
 						nextScreenTitle: 'Feed',
-						nextScreen: App
+						nextScreen: Home
 					}
 				};
 			default:
@@ -66,7 +61,7 @@ class Scene extends Component {
 					title: 'Login',
 					passProps: {
 						nextScreenTitle: 'Feed',
-						nextScreen: App
+						nextScreen: Home
 					}
 				};
 		}
@@ -76,7 +71,7 @@ class Scene extends Component {
 		const onPrev = (navigator, route) => {
 			navigator.pop();
 			switch (route.component) {
-				case App:
+				case Home:
 					this.props.onLogout();
 					break;
 				default:
