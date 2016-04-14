@@ -1,16 +1,10 @@
 'use strict';
 
 import React from 'react-native';
-import {connect} from "../../node_modules/react-redux";
-import {bindActionCreators} from 'redux';
-
-import ProgressBar from '../components/progress';
 import moment from 'moment';
 
+import ProgressBar from '../components/progress';
 import PushPayload from '../components/pushPayload';
-import {requestSelector} from 'redux-reqhelper';
-import * as feedActions from '../actions/feedAction';
-import newId from '../helpers/newid';
 
 let {
 	StyleSheet,
@@ -62,21 +56,6 @@ let styles = StyleSheet.create({
 
 
 class Feed extends Component {
-
-	static localState = {
-		requestId: null,
-		dataSource: new ListView.DataSource({
-			rowHasChanged: (r1, r2) => r1 != r2
-		})
-	};
-
-	componentDidMount() {
-		Feed.localState.requestId = newId();
-		this.props.feedActions.feedRequest(Feed.localState.requestId, {
-			user: this.props.user,
-			header: this.props.header
-		});
-	}
 
 	render() {
 		if (this.props.isLoading) {
@@ -144,22 +123,4 @@ Feed.propTypes = {
 };
 
 
-const mapStateToProps = (state, props) => {
-	const selector = requestSelector('feed', state, props)(Feed.localState.requestId);
-	let data = Array.isArray(selector.data) ? selector.data : [];
-	debugger;
-	let feedItems = data.filter((ev)=> ~[ 'PushEvent', 'WatchEvent' ].indexOf(ev.type));
-
-	return {
-		...selector,
-		dataSource: Feed.localState.dataSource.cloneWithRows(feedItems || [])
-	}
-};
-
-const mapDispatchToProps = (dispatch) => {
-	return {
-		feedActions: bindActionCreators(feedActions, dispatch)
-	}
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Feed);
+export default Feed;

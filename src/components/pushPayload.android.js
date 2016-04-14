@@ -62,7 +62,6 @@ class PushPayload extends Component {
 		let ds = new ListView.DataSource({
 			rowHasChanged: (r1, r2) => r1 != r2
 		});
-		debugger;
 		this.dataSource = ds.cloneWithRows(props.pushEvent.payload.commits || []);
 	}
 

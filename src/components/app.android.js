@@ -2,8 +2,8 @@
 
 import React from 'react-native';
 import TabNavigator from 'react-native-tab-navigator';
-import Feed from '../containers/feed';
-import Search from '../containers/search';
+import FeedContainer from '../containers/feed.container';
+import SearchContainer from '../containers/search.container';
 
 let {
 	Image,
@@ -45,7 +45,7 @@ class App extends Component {
 					renderIcon={() => <Image style={styles.image} source={require('image!ic_feed')}/> }
 					renderSelectedIcon={() => <Image style={styles.image} source={require('image!ic_feed')}/>}
 					onPress={() => this.setState({ selectedTab: 'feed' })}>
-					<Feed {...this.props}/>
+					<FeedContainer {...this.props}/>
 				</TabNavigator.Item>
 
 				<TabNavigator.Item
@@ -54,7 +54,7 @@ class App extends Component {
 					renderIcon={() => <Image style={styles.image} source={require('image!ic_search')}/> }
 					renderSelectedIcon={() => <Image style={styles.image} source={require('image!ic_search')}/>}
 					onPress={() => this.setState({ selectedTab: 'search' })}>
-					<Search {...this.props}/>
+					<SearchContainer {...this.props}/>
 				</TabNavigator.Item>
 
 			</TabNavigator>

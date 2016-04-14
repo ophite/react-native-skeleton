@@ -7,7 +7,7 @@ import * as types from '../actions/loginAction';
 // login
 export function* loginFlow() {
 	while (true) {
-		yield call(storageService.authClear);
+		// yield call(storageService.authClear);
 		let data = yield take(types.LOGIN_REQUEST);
 		yield fork(authorize, {
 			requestId: data.payload.requestId,
