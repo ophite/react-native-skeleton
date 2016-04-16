@@ -3,7 +3,7 @@
 import React from 'react-native';
 import moment from 'moment';
 
-import ProgressBar from './progress';
+import ProgressBar from '../../components/progress';
 
 let {
 	StyleSheet,

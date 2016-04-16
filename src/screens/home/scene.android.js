@@ -2,10 +2,10 @@
 
 import React from "react-native";
 
-import NavigationBar from "./navigation-bar";
-import ProgressBar from './progress';
+import NavigationBar from "../../components/navigation-bar";
+import ProgressBar from '../../components/progress';
 import Home from "./home";
-import LoginContainer from "../containers/login.container";
+import LoginContainer from "../login/login.container.js";
 
 
 let {

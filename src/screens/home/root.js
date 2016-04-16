@@ -1,8 +1,8 @@
 import React from "react-native";
 import {Provider} from "react-redux";
 
-import SceneContainer from "./scene.container";
-import configureStore from "../store/configure-store";
+import SceneContainer from "./scene.container.js";
+import configureStore from "../../store/configure-store";
 
 const store = configureStore();
 

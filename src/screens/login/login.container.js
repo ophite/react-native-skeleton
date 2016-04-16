@@ -1,13 +1,13 @@
 /*eslint-disable prefer-const */
 
 import React from "react-native";
-import {connect} from "../../node_modules/react-redux";
+import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {requestSelector} from 'redux-reqhelper';
 
-import Login from '../components/login';
-import * as loginActions from '../actions/loginAction';
-import newId from '../helpers/newid';
+import Login from './login';
+import * as loginActions from '../../actions/loginAction';
+import newId from '../../helpers/newid';
 
 let {
 	Component

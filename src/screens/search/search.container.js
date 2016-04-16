@@ -1,14 +1,14 @@
 /*eslint-disable prefer-const */
 
 import React from "react-native";
-import {connect} from "../../node_modules/react-redux";
+import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {requestSelector} from 'redux-reqhelper';
 
-import Search from '../components/search';
-import SearchResults from '../components/searchResults';
-import * as searchActions from '../actions/searchAction';
-import newId from '../helpers/newid';
+import Search from './search';
+import SearchResults from './searchResults';
+import * as searchActions from '../../actions/searchAction';
+import newId from '../../helpers/newid';
 
 
 let {

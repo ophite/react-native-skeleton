@@ -1,14 +1,14 @@
 'use strict';
 
 import React from 'react-native';
-import {connect} from "../../node_modules/react-redux";
+import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {requestSelector} from 'redux-reqhelper';
 
-import Feed from '../components/feed';
-import PushPayload from '../components/pushPayload';
-import * as feedActions from '../actions/feedAction';
-import newId from '../helpers/newid';
+import Feed from './feed';
+import PushPayload from './pushPayload';
+import * as feedActions from '../../actions/feedAction';
+import newId from '../../helpers/newid';
 
 let {
 	Component,
