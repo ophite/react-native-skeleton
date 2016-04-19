@@ -5,7 +5,8 @@
   "scripts": {
     "flow": "flow check",
     "lint": "eslint --ext .js,.jsx src",
-    "start": "react-native start",
+    "start0": "react-native run-android",
+    "start1": "react-native start",
     "start2": "node node_modules/react-native/local-cli/cli.js start",
     "clean": "npm run fixBabel",
     "fixBabel": "find node_modules -type f -name .babelrc | grep -v /react-native/ | xargs rm",
