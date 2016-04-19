@@ -1,3 +1,5 @@
+#### Boilerplate (skeleton) for React-Native, using react-redux, reselect, redux-saga, react
+
 #### Getting Started
 
 - Make sure XCode is installed.
