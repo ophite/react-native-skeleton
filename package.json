@@ -1,5 +1,5 @@
 {
-  "name": "App",
+  "name": "react-native-skeleton",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -26,5 +26,27 @@
     "redux-reqhelper": "0.0.3",
     "redux-saga": "^0.9.5",
     "redux-thunk": "1.0.3"
-  }
+  },
+  "description": "- Make sure XCode is installed.",
+  "main": "index.android.js",
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ophite/react-native-skeleton.git"
+  },
+  "keywords": [
+    "react-native",
+    "react-redux",
+    "redux-saga",
+    "reselect",
+    "boilerplate",
+    "skeleton",
+    "react"
+  ],
+  "author": "Iurii Kobernyk <kobernik.yura@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ophite/react-native-skeleton/issues"
+  },
+  "homepage": "https://github.com/ophite/react-native-skeleton#readme"
 }
