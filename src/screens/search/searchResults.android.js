@@ -1,15 +1,16 @@
 'use strict';
 
-import React from 'react-native';
+import React from 'react';
+import ReactNative from 'react-native';
 
 let {
 	StyleSheet,
 	Text,
-	Component,
 	View,
 	ListView,
 	Image,
-} = React;
+} = ReactNative;
+let { Component } = React;
 
 let styles = StyleSheet.create({
 	containerProgress: {

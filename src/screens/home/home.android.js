@@ -1,6 +1,7 @@
 'use strict';
 
-import React from 'react-native';
+import React from 'react';
+import ReactNative from 'react-native';
 import TabNavigator from 'react-native-tab-navigator';
 import FeedContainer from '../feed/feed.container.js';
 import SearchContainer from '../search/search.container.js';
@@ -8,9 +9,9 @@ import SearchContainer from '../search/search.container.js';
 let {
 	Image,
 	StyleSheet,
-	Component,
-} = React;
+} = ReactNative;
 
+let { Component } = React;
 
 let styles = StyleSheet.create({
 	image: {

@@ -1,16 +1,17 @@
 'use strict';
 
-import React from 'react-native';
+import React from 'react';
+import ReactNative from 'react-native';
 import moment from 'moment';
 
 let {
 	StyleSheet,
 	Text,
-	Component,
 	View,
 	ListView,
 	Image,
-} = React;
+} = ReactNative;
+let { Component } = React;
 
 let styles = StyleSheet.create({
 	container: {

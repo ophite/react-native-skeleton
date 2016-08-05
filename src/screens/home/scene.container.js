@@ -1,6 +1,7 @@
 /*eslint-disable prefer-const */
 
-import React from "react-native";
+import React from "react";
+import ReactNative from 'react-native';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 

@@ -1,6 +1,7 @@
 /*eslint-disable prefer-const */
 
-import React from "react-native";
+import React from "react";
+import ReactNative from 'react-native';
 import ProgressBar from '../../components/progress';
 
 let {
@@ -10,8 +11,8 @@ let {
 	Image,
 	TextInput,
 	TouchableHighlight,
-	Component
-} = React;
+} = ReactNative;
+let { Component } = React;
 
 
 let styles = StyleSheet.create({

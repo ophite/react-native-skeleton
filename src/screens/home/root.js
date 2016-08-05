@@ -1,4 +1,5 @@
-import React from "react-native";
+import React from "react";
+import ReactNative from "react-native";
 import {Provider} from "react-redux";
 
 import SceneContainer from "./scene.container.js";

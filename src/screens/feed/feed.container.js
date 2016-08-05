@@ -1,6 +1,7 @@
 'use strict';
 
-import React from 'react-native';
+import React from 'react';
+import ReactNative from 'react-native';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {requestSelector} from 'redux-reqhelper';
@@ -11,9 +12,9 @@ import * as feedActions from '../../actions/feedAction';
 import newId from '../../helpers/newid';
 
 let {
-	Component,
 	ListView,
-} = React;
+} = ReactNative;
+let { Component } = React;
 
 
 class FeedContainer extends Component {

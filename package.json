@@ -18,10 +18,11 @@
     "buffer": "^4.5.1",
     "lodash": "^4.6.1",
     "moment": "^2.12.0",
-    "react-native": "0.21.0",
+    "react": "^15.3.0",
+    "react-native": "^0.31.0",
     "react-native-tab-navigator": "^0.2.17",
-    "react-redux": "4.4.0",
-    "redux": "3.3.1",
+    "react-redux": "4.4.5",
+    "redux": "3.5.2",
     "redux-actions": "^0.9.1",
     "redux-logger": "^2.0.1",
     "redux-reqhelper": "0.0.3",
@@ -30,7 +31,6 @@
   },
   "description": "- Make sure XCode is installed.",
   "main": "index.android.js",
-  "devDependencies": {},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ophite/react-native-skeleton.git"
@@ -49,5 +49,8 @@
   "bugs": {
     "url": "https://github.com/ophite/react-native-skeleton/issues"
   },
-  "homepage": "https://github.com/ophite/react-native-skeleton#readme"
+  "homepage": "https://github.com/ophite/react-native-skeleton#readme",
+  "devDependencies": {
+    "rnpm-plugin-upgrade": "^0.26.0"
+  }
 }

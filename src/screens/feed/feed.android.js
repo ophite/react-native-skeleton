@@ -1,6 +1,7 @@
 'use strict';
 
-import React from 'react-native';
+import React from "react";
+import ReactNative from 'react-native';
 import moment from 'moment';
 
 import ProgressBar from '../../components/progress';
@@ -8,12 +9,12 @@ import ProgressBar from '../../components/progress';
 let {
 	StyleSheet,
 	Text,
-	Component,
 	View,
 	ListView,
 	Image,
 	TouchableHighlight
-} = React;
+} = ReactNative;
+let { Component } = React;
 
 let styles = StyleSheet.create({
 	containerProgress: {

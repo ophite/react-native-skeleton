@@ -1,12 +1,13 @@
 'use strict';
 
 import React from 'react-native';
+import ReactNative from "react";
 import ProgressBar from 'ProgressBarAndroid';
 
 let {
-	StyleSheet,
-	Component,
-} = React;
+	StyleSheet
+} = ReactNative;
+let { Component } = React;
 
 
 let styles = StyleSheet.create({

@@ -1,6 +1,7 @@
 /*eslint-disable prefer-const */
 
-import React from "react-native";
+import React from "react";
+import ReactNative from 'react-native';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {requestSelector} from 'redux-reqhelper';
@@ -13,8 +14,8 @@ import newId from '../../helpers/newid';
 
 let {
 	ListView,
-	Component
-} = React;
+} = ReactNative;
+let { Component } = React;
 
 
 class SearchContainer extends Component {
